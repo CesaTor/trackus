@@ -1,12 +1,12 @@
 /// Generated file. Do not edit.
 ///
-/// Original: lib/counter/i18n
+/// Original: lib/core/i18n
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 1
+/// Strings: 2
 ///
-/// Built on 2024-04-26 at 14:58 UTC
+/// Built on 2024-04-26 at 16:03 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -140,7 +140,18 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final Translations _root = this; // ignore: unused_field
 
 	// Translations
+	late final _StringsCoreEn core = _StringsCoreEn._(_root);
 	late final _StringsCounterEn counter = _StringsCounterEn._(_root);
+}
+
+// Path: core
+class _StringsCoreEn {
+	_StringsCoreEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get appName => 'Trackus';
 }
 
 // Path: counter

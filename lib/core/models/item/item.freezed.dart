@@ -22,7 +22,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 mixin _$Item {
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  String get hexColor => throw _privateConstructorUsedError;
+  int get colorValue => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $ItemCopyWith<$Res> {
   factory $ItemCopyWith(Item value, $Res Function(Item) then) =
       _$ItemCopyWithImpl<$Res, Item>;
   @useResult
-  $Res call({String name, String description, String hexColor});
+  $Res call({String name, String description, int colorValue});
 }
 
 /// @nodoc
@@ -52,7 +52,7 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
   $Res call({
     Object? name = null,
     Object? description = null,
-    Object? hexColor = null,
+    Object? colorValue = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -63,10 +63,10 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      hexColor: null == hexColor
-          ? _value.hexColor
-          : hexColor // ignore: cast_nullable_to_non_nullable
-              as String,
+      colorValue: null == colorValue
+          ? _value.colorValue
+          : colorValue // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -78,7 +78,7 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
       __$$ItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String description, String hexColor});
+  $Res call({String name, String description, int colorValue});
 }
 
 /// @nodoc
@@ -93,7 +93,7 @@ class __$$ItemImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? description = null,
-    Object? hexColor = null,
+    Object? colorValue = null,
   }) {
     return _then(_$ItemImpl(
       name: null == name
@@ -104,10 +104,10 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      hexColor: null == hexColor
-          ? _value.hexColor
-          : hexColor // ignore: cast_nullable_to_non_nullable
-              as String,
+      colorValue: null == colorValue
+          ? _value.colorValue
+          : colorValue // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -116,7 +116,7 @@ class __$$ItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ItemImpl extends _Item {
   const _$ItemImpl(
-      {required this.name, required this.description, required this.hexColor})
+      {required this.name, required this.description, required this.colorValue})
       : super._();
 
   factory _$ItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -127,11 +127,11 @@ class _$ItemImpl extends _Item {
   @override
   final String description;
   @override
-  final String hexColor;
+  final int colorValue;
 
   @override
   String toString() {
-    return 'Item(name: $name, description: $description, hexColor: $hexColor)';
+    return 'Item(name: $name, description: $description, colorValue: $colorValue)';
   }
 
   @override
@@ -142,13 +142,13 @@ class _$ItemImpl extends _Item {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.hexColor, hexColor) ||
-                other.hexColor == hexColor));
+            (identical(other.colorValue, colorValue) ||
+                other.colorValue == colorValue));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, description, hexColor);
+  int get hashCode => Object.hash(runtimeType, name, description, colorValue);
 
   @JsonKey(ignore: true)
   @override
@@ -168,7 +168,7 @@ abstract class _Item extends Item {
   const factory _Item(
       {required final String name,
       required final String description,
-      required final String hexColor}) = _$ItemImpl;
+      required final int colorValue}) = _$ItemImpl;
   const _Item._() : super._();
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$ItemImpl.fromJson;
@@ -178,7 +178,7 @@ abstract class _Item extends Item {
   @override
   String get description;
   @override
-  String get hexColor;
+  int get colorValue;
   @override
   @JsonKey(ignore: true)
   _$$ItemImplCopyWith<_$ItemImpl> get copyWith =>

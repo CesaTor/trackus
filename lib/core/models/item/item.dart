@@ -11,7 +11,7 @@ class Item with _$Item {
   const factory Item({
     required String name,
     required String description,
-    required String hexColor, // const Color(0xFF42A5F5);
+    required int colorValue, // const Color(0xFF42A5F5);
   }) = _Item;
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 

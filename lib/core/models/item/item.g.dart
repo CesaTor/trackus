@@ -17,14 +17,14 @@ const ItemSchema = CollectionSchema(
   name: r'Item',
   id: 7900997316587104717,
   properties: {
-    r'description': PropertySchema(
+    r'colorValue': PropertySchema(
       id: 0,
-      name: r'description',
-      type: IsarType.string,
+      name: r'colorValue',
+      type: IsarType.long,
     ),
-    r'hexColor': PropertySchema(
+    r'description': PropertySchema(
       id: 1,
-      name: r'hexColor',
+      name: r'description',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
@@ -54,7 +54,6 @@ int _itemEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.description.length * 3;
-  bytesCount += 3 + object.hexColor.length * 3;
   bytesCount += 3 + object.name.length * 3;
   return bytesCount;
 }
@@ -65,8 +64,8 @@ void _itemSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.description);
-  writer.writeString(offsets[1], object.hexColor);
+  writer.writeLong(offsets[0], object.colorValue);
+  writer.writeString(offsets[1], object.description);
   writer.writeString(offsets[2], object.name);
 }
 
@@ -77,8 +76,8 @@ Item _itemDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Item(
-    description: reader.readString(offsets[0]),
-    hexColor: reader.readString(offsets[1]),
+    colorValue: reader.readLong(offsets[0]),
+    description: reader.readString(offsets[1]),
     name: reader.readString(offsets[2]),
   );
   return object;
@@ -92,7 +91,7 @@ P _itemDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
@@ -188,6 +187,58 @@ extension ItemQueryWhere on QueryBuilder<Item, Item, QWhereClause> {
 }
 
 extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
+  QueryBuilder<Item, Item, QAfterFilterCondition> colorValueEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'colorValue',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> colorValueGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'colorValue',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> colorValueLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'colorValue',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> colorValueBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'colorValue',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterFilterCondition> descriptionEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -313,135 +364,6 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'description',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hexColor',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hexColor',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hexColor',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hexColor',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'hexColor',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'hexColor',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorContains(String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'hexColor',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'hexColor',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hexColor',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> hexColorIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'hexColor',
         value: '',
       ));
     });
@@ -633,6 +555,18 @@ extension ItemQueryObject on QueryBuilder<Item, Item, QFilterCondition> {}
 extension ItemQueryLinks on QueryBuilder<Item, Item, QFilterCondition> {}
 
 extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
+  QueryBuilder<Item, Item, QAfterSortBy> sortByColorValue() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'colorValue', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByColorValueDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'colorValue', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -642,18 +576,6 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
   QueryBuilder<Item, Item, QAfterSortBy> sortByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterSortBy> sortByHexColor() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hexColor', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterSortBy> sortByHexColorDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hexColor', Sort.desc);
     });
   }
 
@@ -671,6 +593,18 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
 }
 
 extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
+  QueryBuilder<Item, Item, QAfterSortBy> thenByColorValue() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'colorValue', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByColorValueDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'colorValue', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> thenByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -680,18 +614,6 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
   QueryBuilder<Item, Item, QAfterSortBy> thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterSortBy> thenByHexColor() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hexColor', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterSortBy> thenByHexColorDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hexColor', Sort.desc);
     });
   }
 
@@ -721,17 +643,16 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
 }
 
 extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
+  QueryBuilder<Item, Item, QDistinct> distinctByColorValue() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'colorValue');
+    });
+  }
+
   QueryBuilder<Item, Item, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<Item, Item, QDistinct> distinctByHexColor(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hexColor', caseSensitive: caseSensitive);
     });
   }
 
@@ -750,15 +671,15 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Item, String, QQueryOperations> descriptionProperty() {
+  QueryBuilder<Item, int, QQueryOperations> colorValueProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'description');
+      return query.addPropertyName(r'colorValue');
     });
   }
 
-  QueryBuilder<Item, String, QQueryOperations> hexColorProperty() {
+  QueryBuilder<Item, String, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hexColor');
+      return query.addPropertyName(r'description');
     });
   }
 
@@ -776,12 +697,12 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
 _$ItemImpl _$$ItemImplFromJson(Map<String, dynamic> json) => _$ItemImpl(
       name: json['name'] as String,
       description: json['description'] as String,
-      hexColor: json['hexColor'] as String,
+      colorValue: (json['colorValue'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$ItemImplToJson(_$ItemImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
-      'hexColor': instance.hexColor,
+      'colorValue': instance.colorValue,
     };

@@ -8,32 +8,24 @@ class ItemRepositoryImpl implements ItemRepository {
   final Isar isar;
 
   @override
-  Future<List<Item>> getAllItems() async {
-    return isar.items.where().findAll();
+  Future<List<Item>> getAllItems() => isar.items.where().findAll();
+
+  @override
+  Future<void> insertItem(Item item) {
+    return isar.writeTxn(() async => isar.items.put(item));
   }
 
   @override
-  Future<void> insertItem(Item item) async {
-    await isar.items.put(item);
+  Future<void> updateItem(Item item) => insertItem(item);
+
+  @override
+  Future<void> deleteItem(Item item) => deleteItemById(item.id);
+
+  @override
+  Future<void> deleteItemById(int id) {
+    return isar.writeTxn(() async => isar.items.delete(id));
   }
 
   @override
-  Future<void> updateItem(Item item) async {
-    await isar.items.put(item);
-  }
-
-  @override
-  Future<void> deleteItem(Item item) async {
-    await isar.items.delete(item.id);
-  }
-
-  @override
-  Future<void> deleteItemById(int id) async {
-    await isar.items.delete(id);
-  }
-
-  @override
-  Future<void> clearItems() async {
-    await isar.items.clear();
-  }
+  Future<void> clearItems() => isar.writeTxn(() async => isar.items.clear());
 }
