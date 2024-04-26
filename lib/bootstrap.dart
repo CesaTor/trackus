@@ -34,7 +34,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   // Initialize i18n
   LocaleSettings.useDeviceLocale();
-  Future<Widget> builder() async => TranslationProvider(child: await builder());
-
-  runApp(await builder());
+  
+  runApp(TranslationProvider(child: await builder()));
 }
