@@ -1,4 +1,3 @@
-// This file is "main.dart"
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 
@@ -19,4 +18,7 @@ class Item with _$Item {
 
   /// add this
   Id get id => Isar.autoIncrement;
+
+  @override
+  String toString() => '$id';
 }

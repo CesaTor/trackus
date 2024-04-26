@@ -130,11 +130,6 @@ class _$ItemImpl extends _Item {
   final int colorValue;
 
   @override
-  String toString() {
-    return 'Item(name: $name, description: $description, colorValue: $colorValue)';
-  }
-
-  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
