@@ -1,0 +1,20 @@
+targets:
+  $default:
+    builders:
+      slang_build_runner:
+        options:
+          base_locale: en
+          fallback_strategy: base_locale
+          input_file_pattern: .i18n.json
+          output_directory: lib/core/i18n
+          output_format: single_file
+          locale_handling: true
+          flutter_integration: true
+          namespaces: true
+          translate_var: i18n
+          enum_name: AppLocale
+          key_case: camel
+          key_map_case: camel
+          param_case: pascal
+          flat_map: false
+          translation_overrides: false

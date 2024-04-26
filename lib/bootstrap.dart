@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:trackus/core/i18n/strings.g.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -27,7 +28,13 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
-  // Add cross-flavor configuration here
+  // Add cross-flavor configuration here --------------------------------
+  // Require flutter bridge initialization
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize i18n
+  LocaleSettings.useDeviceLocale();
+  Future<Widget> builder() async => TranslationProvider(child: await builder());
 
   runApp(await builder());
 }

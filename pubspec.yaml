@@ -3,8 +3,6 @@ description: A tracker for your focus, trackus (no user tracker included)
 version: 1.0.0+1
 publish_to: none
 
-isar_version: &isar_version 3.1.0 # define the version to be used
-
 environment:
   sdk: "^3.3.0"
 
@@ -15,17 +13,24 @@ dependencies:
   flutter_bloc: ^8.1.4
   flutter_localizations:
     sdk: flutter
+  freezed_annotation: ^2.4.1
   intl: ^0.18.1
-  isar: *isar_version
-  isar_flutter_libs: *isar_version # contains Isar Core
+  isar: 3.1.0
+  isar_flutter_libs: 3.1.0
+  json_annotation: ^4.9.0
+  slang: ^3.30.2
+  slang_flutter: ^3.30.0
 
 dev_dependencies:
   bloc_test: ^9.1.6
-  build_runner: any
+  build_runner: ^2.4.9
   flutter_test:
     sdk: flutter
-  isar_generator: *isar_version
+  freezed: ^2.5.2
+  isar_generator: 3.1.0
+  json_serializable: ^6.8.0
   mocktail: ^1.0.3
+  slang_build_runner: ^3.30.0
   very_good_analysis: ^5.1.0
 
 
