@@ -5,8 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:trackus/core/i18n/strings.g.dart';
-import 'package:trackus/core/models/item/item.dart';
+import 'package:trackus/core/core.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();

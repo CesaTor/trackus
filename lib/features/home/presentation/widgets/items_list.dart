@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trackus/core/models/item/item.dart';
+import 'package:trackus/core/core.dart';
 
 class ItemsList extends StatelessWidget {
   const ItemsList({required this.items, super.key});

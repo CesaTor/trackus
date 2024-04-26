@@ -1,4 +1,4 @@
-import 'package:trackus/core/models/item/item.dart';
+import 'package:trackus/core/core.dart';
 import 'package:trackus/features/home/domain/domain.dart';
 
 class GetAllItems {

@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
-import 'package:trackus/core/i18n/strings.g.dart';
-import 'package:trackus/core/models/item/item.dart';
-import 'package:trackus/core/ui/ui.dart';
-import 'package:trackus/features/home/data/repositories/item_repository.dart';
-import 'package:trackus/features/home/domain/domain.dart';
-import 'package:trackus/features/home/domain/usecases/usecases.dart';
-import 'package:trackus/features/home/presentation/cubit/home_cubit.dart';
-import 'package:trackus/features/home/presentation/widgets/items_list.dart';
+import 'package:trackus/core/core.dart';
+import 'package:trackus/features/home/home.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

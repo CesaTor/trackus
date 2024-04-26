@@ -1,4 +1,4 @@
-import 'package:trackus/core/models/item/item.dart';
+import 'package:trackus/core/core.dart';
 
 abstract class ItemRepository {
   Future<List<Item>> getAllItems();
