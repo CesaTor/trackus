@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:trackus/core/core.dart';
-import 'package:trackus/features/add_item/presentation/widgets/item_color.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackus/lib.dart';
 
 class ItemsList extends StatelessWidget {
-  const ItemsList({required this.items, super.key});
-
-  final List<Item> items;
+  const ItemsList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return ListTile(
-          leading: ItemColor(color: Color(item.colorValue)),
-          title: Text(item.name),
-          trailing: IconButton(
-            icon: const Icon(Icons.play_arrow),
-            onPressed: () {
-              // start timer
-            },
+    final items = context.select((AppCubit cubit) => cubit.state.items);
+    final entry = context.select((AppCubit cubit) => cubit.state.running);
+
+    return CustomScrollView(
+      slivers: <Widget>[
+        if (entry != null)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: RunningEntry(entry: entry),
+            ),
           ),
-        );
-      },
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final item = items[index];
+              return ListTile(
+                leading: ItemColor(color: Color(item.colorValue)),
+                title: Text(item.name),
+                trailing: IconButton(
+                  icon: const Icon(Icons.play_arrow),
+                  onPressed: () => context.read<AppCubit>().start(item),
+                ),
+              );
+            },
+            childCount: items.length,
+          ),
+        ),
+      ],
     );
   }
 }

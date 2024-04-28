@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackus/app/app.dart';
 import 'package:trackus/core/core.dart';
 import 'package:trackus/features/add_item/presentation/pages/add_item.dart';
 import 'package:trackus/features/home/home.dart';
@@ -9,9 +10,7 @@ class ItemListModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = context.select((ItemsCubit cubit) => cubit.state);
-
-    final color = Colors.grey;
+    const color = Colors.grey;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +35,7 @@ class ItemListModal extends StatelessWidget {
                     MaterialPageRoute<void>(
                       builder: (_) => AddItem(
                         onAdd: (title, color) {
-                          context.read<ItemsCubit>().addItem(
+                          context.read<AppCubit>().addItem(
                                 Item()
                                   ..name = title
                                   ..colorValue = color.value
@@ -50,7 +49,7 @@ class ItemListModal extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 16),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -66,7 +65,7 @@ class ItemListModal extends StatelessWidget {
           ),
         ),
       ),
-      body: ItemsList(items: items),
+      body: const ItemsList(),
     );
   }
 }

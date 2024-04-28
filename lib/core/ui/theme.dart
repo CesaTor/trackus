@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final roudedShape = RoundedRectangleBorder(
-  borderRadius: BorderRadius.circular(8),
-);
+final roundedBorder = BorderRadius.circular(8);
+
+final roudedShape = RoundedRectangleBorder(borderRadius: roundedBorder);
 
 final _textTheme = GoogleFonts.robotoTextTheme();
 

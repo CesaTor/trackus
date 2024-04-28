@@ -10,5 +10,10 @@ class Entry {
 
   final item = IsarLink<Item>();
 
+  void set({DateTime? start, DateTime? end}) {
+    this.start = start ?? this.start;
+    this.end = end ?? this.end;
+  }
+
   Id get id => Isar.autoIncrement;
 }

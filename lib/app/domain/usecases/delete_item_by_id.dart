@@ -1,4 +1,4 @@
-import 'package:trackus/core/feature/domain/domain.dart';
+import 'package:trackus/app/domain/domain.dart';
 
 class DeleteItemById {
   DeleteItemById(this.repository);
