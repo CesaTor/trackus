@@ -16,14 +16,24 @@ class Home extends StatelessWidget {
       body: ItemsList(items: items),
       persistentFooterAlignment: AlignmentDirectional.bottomCenter,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet<void>(
-            context: context,
-            builder: (context) => const ItemListModal(),
-          );
-        },
-        child: const Text('Items'),
+      floatingActionButton: SizedBox(
+        child: PrimaryButton(
+          onPressed: () {
+            showModalBottomSheet<void>(
+              context: context,
+              builder: (context) => const ItemListModal(),
+            );
+          },
+          leading: const Icon(Icons.keyboard_arrow_up),
+          title: Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text(
+              'Items',
+              style: Theme.of(context).primaryTextTheme.labelLarge,
+            ),
+          ),
+          // text: 'Items',
+        ),
       ),
     );
   }
