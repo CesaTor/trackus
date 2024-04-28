@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:trackus/app/domain/usecases/insert_entry.dart';
 import 'package:trackus/lib.dart';
 
 class AppState {
@@ -27,16 +28,19 @@ class AppCubit extends Cubit<AppState> {
     required InsertItem insertItem,
     required ClearItems clearItems,
     required DeleteItemById deleteItemById,
+    required InsertEntry insertEntry,
   })  : _getAllItems = getAllItems,
         _insertItem = insertItem,
         _clearItems = clearItems,
         _deleteItemById = deleteItemById,
+        _insertEntry = insertEntry,
         super(AppState(items: [], running: null));
 
   final GetAllItems _getAllItems;
   final InsertItem _insertItem;
   final ClearItems _clearItems;
   final DeleteItemById _deleteItemById;
+  final InsertEntry _insertEntry;
 
   Future<void> init() async {
     emit(AppState(items: await _getAllItems(), running: null));
@@ -46,6 +50,8 @@ class AppCubit extends Cubit<AppState> {
     await _insertItem(item);
     emit(state.copyWith(items: await _getAllItems()));
   }
+
+  Future<void> addEntry(Entry entry) => _insertEntry(entry);
 
   Future<void> removeItem(int id) async {
     await _deleteItemById(id);
@@ -65,10 +71,13 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(running: e));
   }
 
-  Entry? stop() {
+  Future<Entry?> stop() async {
     final entry = state.running?..set(end: DateTime.now());
 
     emit(AppState(items: state.items, running: null));
+
+    if (entry != null) await _insertEntry(entry);
+
     return entry;
   }
 }

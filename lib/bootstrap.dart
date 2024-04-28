@@ -40,7 +40,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // Initialize Database
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [ItemSchema],
+    [ItemSchema, EntrySchema],
     directory: dir.path,
   );
 

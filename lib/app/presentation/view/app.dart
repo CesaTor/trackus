@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:isar/isar.dart';
 import 'package:trackus/app/app.dart';
+import 'package:trackus/app/data/repositories/entry_repository.dart';
+import 'package:trackus/app/domain/usecases/insert_entry.dart';
 import 'package:trackus/core/core.dart';
 import 'package:trackus/features/home/presentation/pages/home.dart';
 
@@ -17,6 +19,7 @@ class App extends StatelessWidget {
         insertItem: InsertItem(ItemRepositoryImpl(c.read<Isar>())),
         clearItems: ClearItems(ItemRepositoryImpl(c.read<Isar>())),
         deleteItemById: DeleteItemById(ItemRepositoryImpl(c.read<Isar>())),
+        insertEntry: InsertEntry(EntryRepositoryImpl(c.read<Isar>())),
       )..init(),
       child: MaterialApp(
         theme: lightTheme,
