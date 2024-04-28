@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trackus/core/core.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -15,9 +16,7 @@ class PrimaryButton extends StatelessWidget {
     return MaterialButton(
       onPressed: onPressed,
       color: Theme.of(context).primaryColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      shape: roudedShape,
       child: Text(
         text,
         style: Theme.of(context).primaryTextTheme.labelLarge,

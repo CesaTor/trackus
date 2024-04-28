@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:trackus/core/core.dart';
-import 'package:trackus/features/home/domain/repositories/item_repository.dart';
+import 'package:trackus/core/feature/domain/repositories/item_repository.dart';
 
 class ItemRepositoryImpl implements ItemRepository {
   ItemRepositoryImpl(this.isar);

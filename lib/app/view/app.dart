@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:trackus/core/i18n/strings.g.dart';
+import 'package:isar/isar.dart';
+import 'package:trackus/core/core.dart';
 import 'package:trackus/features/home/presentation/pages/home.dart';
 
 class App extends StatelessWidget {
@@ -11,14 +13,21 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
-        useMaterial3: true,
+        brightness: Brightness.dark,
       ),
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      home: const Home(),
+      home: BlocProvider(
+        create: (c) => ItemsCubit(
+          getAllItems: GetAllItems(ItemRepositoryImpl(c.read<Isar>())),
+          insertItem: InsertItem(ItemRepositoryImpl(c.read<Isar>())),
+          clearItems: ClearItems(ItemRepositoryImpl(c.read<Isar>())),
+        )..init(),
+        child: const Home(),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trackus/core/core.dart';
+import 'package:trackus/features/add_item/presentation/widgets/item_color.dart';
 
 class ItemsList extends StatelessWidget {
   const ItemsList({required this.items, super.key});
@@ -13,9 +14,14 @@ class ItemsList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = items[index];
         return ListTile(
-          leading: CircleAvatar(backgroundColor: Color(item.colorValue)),
+          leading: ItemColor(color: Color(item.colorValue)),
           title: Text(item.name),
-          subtitle: Text(item.description),
+          trailing: IconButton(
+            icon: const Icon(Icons.play_arrow),
+            onPressed: () {
+              // start timer
+            },
+          ),
         );
       },
     );

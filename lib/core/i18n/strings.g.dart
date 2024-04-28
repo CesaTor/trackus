@@ -6,7 +6,7 @@
 /// Locales: 1
 /// Strings: 2
 ///
-/// Built on 2024-04-26 at 16:03 UTC
+/// Built on 2024-04-28 at 13:20 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -141,7 +141,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 	late final _StringsCoreEn core = _StringsCoreEn._(_root);
-	late final _StringsCounterEn counter = _StringsCounterEn._(_root);
+	late final _StringsAddEn add = _StringsAddEn._(_root);
 }
 
 // Path: core
@@ -154,12 +154,12 @@ class _StringsCoreEn {
 	String get appName => 'Trackus';
 }
 
-// Path: counter
-class _StringsCounterEn {
-	_StringsCounterEn._(this._root);
+// Path: add
+class _StringsAddEn {
+	_StringsAddEn._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get counterAppBarTitle => 'Counter';
+	String get save => 'SAVE';
 }

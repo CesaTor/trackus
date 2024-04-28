@@ -34,7 +34,14 @@ const EntrySchema = CollectionSchema(
   deserializeProp: _entryDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'item': LinkSchema(
+      id: -1541049393135413455,
+      name: r'item',
+      target: r'Item',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _entryGetId,
   getLinks: _entryGetLinks,
@@ -67,10 +74,9 @@ Entry _entryDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Entry(
-    end: reader.readDateTimeOrNull(offsets[0]),
-    start: reader.readDateTime(offsets[1]),
-  );
+  final object = Entry();
+  object.end = reader.readDateTimeOrNull(offsets[0]);
+  object.start = reader.readDateTime(offsets[1]);
   return object;
 }
 
@@ -95,10 +101,12 @@ Id _entryGetId(Entry object) {
 }
 
 List<IsarLinkBase<dynamic>> _entryGetLinks(Entry object) {
-  return [];
+  return [object.item];
 }
 
-void _entryAttach(IsarCollection<dynamic> col, Id id, Entry object) {}
+void _entryAttach(IsarCollection<dynamic> col, Id id, Entry object) {
+  object.item.attach(col, col.isar.collection<Item>(), r'item', id);
+}
 
 extension EntryQueryWhereSort on QueryBuilder<Entry, Entry, QWhere> {
   QueryBuilder<Entry, Entry, QAfterWhere> anyId() {
@@ -353,7 +361,19 @@ extension EntryQueryFilter on QueryBuilder<Entry, Entry, QFilterCondition> {
 
 extension EntryQueryObject on QueryBuilder<Entry, Entry, QFilterCondition> {}
 
-extension EntryQueryLinks on QueryBuilder<Entry, Entry, QFilterCondition> {}
+extension EntryQueryLinks on QueryBuilder<Entry, Entry, QFilterCondition> {
+  QueryBuilder<Entry, Entry, QAfterFilterCondition> item(FilterQuery<Item> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'item');
+    });
+  }
+
+  QueryBuilder<Entry, Entry, QAfterFilterCondition> itemIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'item', 0, true, 0, true);
+    });
+  }
+}
 
 extension EntryQuerySortBy on QueryBuilder<Entry, Entry, QSortBy> {
   QueryBuilder<Entry, Entry, QAfterSortBy> sortByEnd() {
@@ -452,18 +472,3 @@ extension EntryQueryProperty on QueryBuilder<Entry, Entry, QQueryProperty> {
     });
   }
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-_$EntryImpl _$$EntryImplFromJson(Map<String, dynamic> json) => _$EntryImpl(
-      start: DateTime.parse(json['start'] as String),
-      end: json['end'] == null ? null : DateTime.parse(json['end'] as String),
-    );
-
-Map<String, dynamic> _$$EntryImplToJson(_$EntryImpl instance) =>
-    <String, dynamic>{
-      'start': instance.start.toIso8601String(),
-      'end': instance.end?.toIso8601String(),
-    };
