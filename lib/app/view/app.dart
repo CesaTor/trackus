@@ -10,23 +10,20 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
-        brightness: Brightness.dark,
-      ),
-      locale: TranslationProvider.of(context).flutterLocale,
-      supportedLocales: AppLocaleUtils.supportedLocales,
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      home: BlocProvider(
-        create: (c) => ItemsCubit(
-          getAllItems: GetAllItems(ItemRepositoryImpl(c.read<Isar>())),
-          insertItem: InsertItem(ItemRepositoryImpl(c.read<Isar>())),
-          clearItems: ClearItems(ItemRepositoryImpl(c.read<Isar>())),
-        )..init(),
-        child: const Home(),
+    return BlocProvider(
+      create: (c) => ItemsCubit(
+        getAllItems: GetAllItems(ItemRepositoryImpl(c.read<Isar>())),
+        insertItem: InsertItem(ItemRepositoryImpl(c.read<Isar>())),
+        clearItems: ClearItems(ItemRepositoryImpl(c.read<Isar>())),
+      )..init(),
+      child: MaterialApp(
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.dark,
+        locale: TranslationProvider.of(context).flutterLocale,
+        supportedLocales: AppLocaleUtils.supportedLocales,
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        home: const Home(),
       ),
     );
   }

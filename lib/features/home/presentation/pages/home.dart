@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackus/core/core.dart';
-import 'package:trackus/features/add_item/presentation/pages/add_item.dart';
 import 'package:trackus/features/home/home.dart';
+import 'package:trackus/features/item_list/presentation/pages/item_list_modal.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -15,32 +15,16 @@ class Home extends StatelessWidget {
       appBar: buildAppbar(),
       body: ItemsList(items: items),
       persistentFooterAlignment: AlignmentDirectional.bottomCenter,
-      persistentFooterButtons: [
-        PrimaryButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => AddItem(
-                  onAdd: (title, color) {
-                    context.read<ItemsCubit>().addItem(
-                          Item()
-                            ..name = title
-                            ..colorValue = color.value
-                            ..description = '',
-                        );
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-            );
-          },
-          text: 'Add',
-        ),
-        PrimaryButton(
-          onPressed: () => context.read<ItemsCubit>().clearItems(),
-          text: 'Clear',
-        ),
-      ],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (context) => const ItemListModal(),
+          );
+        },
+        child: const Text('Items'),
+      ),
     );
   }
 }
