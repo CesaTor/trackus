@@ -6,7 +6,6 @@ import 'package:trackus/app/app.dart';
 import 'package:trackus/app/data/repositories/entry_repository.dart';
 import 'package:trackus/app/domain/usecases/insert_entry.dart';
 import 'package:trackus/core/core.dart';
-import 'package:trackus/features/home/presentation/pages/home.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -21,14 +20,14 @@ class App extends StatelessWidget {
         deleteItemById: DeleteItemById(ItemRepositoryImpl(c.read<Isar>())),
         insertEntry: InsertEntry(EntryRepositoryImpl(c.read<Isar>())),
       )..init(),
-      child: MaterialApp(
+      child: MaterialApp.router(
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.dark,
         locale: TranslationProvider.of(context).flutterLocale,
         supportedLocales: AppLocaleUtils.supportedLocales,
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
-        home: const Home(),
+        routerConfig: appRouter,
       ),
     );
   }
