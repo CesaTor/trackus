@@ -22,14 +22,24 @@ const ItemSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'priority': PropertySchema(
+    r'dueDate': PropertySchema(
       id: 1,
+      name: r'dueDate',
+      type: IsarType.dateTime,
+    ),
+    r'isDone': PropertySchema(
+      id: 2,
+      name: r'isDone',
+      type: IsarType.bool,
+    ),
+    r'priority': PropertySchema(
+      id: 3,
       name: r'priority',
       type: IsarType.byte,
       enumMap: _ItempriorityEnumValueMap,
     ),
     r'title': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'title',
       type: IsarType.string,
     )
@@ -84,8 +94,10 @@ void _itemSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.description);
-  writer.writeByte(offsets[1], object.priority.index);
-  writer.writeString(offsets[2], object.title);
+  writer.writeDateTime(offsets[1], object.dueDate);
+  writer.writeBool(offsets[2], object.isDone);
+  writer.writeByte(offsets[3], object.priority.index);
+  writer.writeString(offsets[4], object.title);
 }
 
 Item _itemDeserialize(
@@ -96,10 +108,12 @@ Item _itemDeserialize(
 ) {
   final object = Item();
   object.description = reader.readStringOrNull(offsets[0]);
+  object.dueDate = reader.readDateTimeOrNull(offsets[1]);
+  object.isDone = reader.readBool(offsets[2]);
   object.priority =
-      _ItempriorityValueEnumMap[reader.readByteOrNull(offsets[1])] ??
+      _ItempriorityValueEnumMap[reader.readByteOrNull(offsets[3])] ??
           Priority.low;
-  object.title = reader.readString(offsets[2]);
+  object.title = reader.readString(offsets[4]);
   return object;
 }
 
@@ -113,9 +127,13 @@ P _itemDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (_ItempriorityValueEnumMap[reader.readByteOrNull(offset)] ??
           Priority.low) as P;
-    case 2:
+    case 4:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -370,6 +388,75 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterFilterCondition> dueDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'dueDate',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dueDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'dueDate',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dueDateEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dueDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dueDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'dueDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dueDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'dueDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dueDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'dueDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -418,6 +505,15 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> isDoneEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isDone',
+        value: value,
       ));
     });
   }
@@ -689,6 +785,30 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> sortByDueDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dueDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByDueDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dueDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByIsDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByIsDoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDone', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> sortByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.asc);
@@ -727,6 +847,18 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> thenByDueDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dueDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByDueDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dueDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -736,6 +868,18 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
   QueryBuilder<Item, Item, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByIsDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByIsDoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isDone', Sort.desc);
     });
   }
 
@@ -772,6 +916,18 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
     });
   }
 
+  QueryBuilder<Item, Item, QDistinct> distinctByDueDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dueDate');
+    });
+  }
+
+  QueryBuilder<Item, Item, QDistinct> distinctByIsDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isDone');
+    });
+  }
+
   QueryBuilder<Item, Item, QDistinct> distinctByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'priority');
@@ -796,6 +952,18 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
   QueryBuilder<Item, String?, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
+    });
+  }
+
+  QueryBuilder<Item, DateTime?, QQueryOperations> dueDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dueDate');
+    });
+  }
+
+  QueryBuilder<Item, bool, QQueryOperations> isDoneProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isDone');
     });
   }
 

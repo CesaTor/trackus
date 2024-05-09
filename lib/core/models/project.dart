@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:trackus/lib.dart';
+
+part 'project.g.dart';
 
 @collection
 class Project {
@@ -20,4 +23,8 @@ class Project {
 
   @enumerated
   late Layout layout;
+}
+
+extension ProjectExtension on Project {
+  IconData get icon => name == 'Inbox' ? Icons.inbox_outlined : Icons.folder;
 }

@@ -11,8 +11,14 @@ class Item {
   /// The name of the item.
   late String title;
 
+  /// The status of the item.
+  late bool isDone;
+
   /// The description of the item.
   String? description;
+
+  /// The due date of the item.
+  DateTime? dueDate;
 
   /// The priority of the item.
   @enumerated

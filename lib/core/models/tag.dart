@@ -1,5 +1,7 @@
 import 'package:isar/isar.dart';
 
+part 'tag.g.dart';
+
 @collection
 class Tag {
   /// The id of the Tag
