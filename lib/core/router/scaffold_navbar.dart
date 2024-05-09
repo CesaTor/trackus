@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+part of 'app_router.dart';
 
-class ScaffoldWithNavBar extends StatelessWidget {
-  const ScaffoldWithNavBar({
+class _ScaffoldWithNavBar extends StatelessWidget {
+  const _ScaffoldWithNavBar({
     required this.navigationShell,
     required this.children,
-    super.key,
   });
 
   /// The navigation shell and container for the branch Navigators.

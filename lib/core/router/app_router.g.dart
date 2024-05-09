@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'router.dart';
+part of 'app_router.dart';
 
 // **************************************************************************
 // GoRouterGenerator
@@ -23,7 +23,6 @@ RouteBase get $shellData => StatefulShellRouteData.$route(
           ],
         ),
         StatefulShellBranchData.$branch(
-          navigatorKey: InboxData.$navigatorKey,
           routes: [
             GoRouteData.$route(
               path: '/inbox',
