@@ -53,11 +53,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   if (isar.projects.filter().nameEqualTo('Inbox').findFirstSync() == null) {
     isar.writeTxnSync(() {
       isar.projects.putSync(
-        Project()
-          ..name = 'Inbox'
-          ..colorValue = 0xFF000000
-          ..isFavorite = true
-          ..layout = Layout.list,
+        Project(
+          name: 'Inbox',
+          colorValue: 0xFF000000,
+          isFavorite: true,
+          layout: Layout.list,
+        ),
       );
     });
   }

@@ -7,7 +7,11 @@ class ItemAdderOptions extends StatefulWidget {
     super.key,
   });
 
-  final void Function(Project project) onSave;
+  final void Function(
+    Project? project,
+    DateTime dueDate,
+    Priority priority,
+  ) onSave;
   final Iterable<Project> projects;
 
   @override
@@ -15,14 +19,14 @@ class ItemAdderOptions extends StatefulWidget {
 }
 
 class _ItemAdderOptionsState extends State<ItemAdderOptions> {
-  late Project project;
+  Project? project;
   late DateTime dueDate;
   TimeOfDay? dueTime;
   late Priority priority;
 
   @override
   void initState() {
-    project = widget.projects.first;
+    project = widget.projects.firstOrNull;
     dueDate = DateTime.now().end;
     priority = Priority.none;
     super.initState();
@@ -53,6 +57,7 @@ class _ItemAdderOptionsState extends State<ItemAdderOptions> {
                 onChange: (value) => setState(() => priority = value),
               ),
               const SizedBox(width: 8),
+              // TODO: Implement tags
               // Chip(
               //   label: Row(
               //     children: [
@@ -101,7 +106,21 @@ class _ItemAdderOptionsState extends State<ItemAdderOptions> {
                 },
               ),
               IconButton(
-                onPressed: () => widget.onSave(project),
+                onPressed: () {
+                  var date = dueDate;
+                  if (dueTime != null) {
+                    date = date.copyWith(
+                      hour: dueTime!.hour,
+                      minute: dueTime!.minute,
+                    );
+                  }
+
+                  widget.onSave(
+                    project,
+                    date,
+                    priority,
+                  );
+                },
                 icon: const Icon(Icons.send),
               ),
             ],

@@ -27,19 +27,29 @@ const ItemSchema = CollectionSchema(
       name: r'dueDate',
       type: IsarType.dateTime,
     ),
-    r'isDone': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 2,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'isDone': PropertySchema(
+      id: 3,
       name: r'isDone',
       type: IsarType.bool,
     ),
     r'priority': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'priority',
       type: IsarType.byte,
       enumMap: _ItempriorityEnumValueMap,
     ),
+    r'stringify': PropertySchema(
+      id: 5,
+      name: r'stringify',
+      type: IsarType.bool,
+    ),
     r'title': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'title',
       type: IsarType.string,
     )
@@ -95,9 +105,11 @@ void _itemSerialize(
 ) {
   writer.writeString(offsets[0], object.description);
   writer.writeDateTime(offsets[1], object.dueDate);
-  writer.writeBool(offsets[2], object.isDone);
-  writer.writeByte(offsets[3], object.priority.index);
-  writer.writeString(offsets[4], object.title);
+  writer.writeLong(offsets[2], object.hashCode);
+  writer.writeBool(offsets[3], object.isDone);
+  writer.writeByte(offsets[4], object.priority.index);
+  writer.writeBool(offsets[5], object.stringify);
+  writer.writeString(offsets[6], object.title);
 }
 
 Item _itemDeserialize(
@@ -106,14 +118,14 @@ Item _itemDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Item();
-  object.description = reader.readStringOrNull(offsets[0]);
-  object.dueDate = reader.readDateTimeOrNull(offsets[1]);
-  object.isDone = reader.readBool(offsets[2]);
-  object.priority =
-      _ItempriorityValueEnumMap[reader.readByteOrNull(offsets[3])] ??
-          Priority.low;
-  object.title = reader.readString(offsets[4]);
+  final object = Item(
+    description: reader.readStringOrNull(offsets[0]),
+    dueDate: reader.readDateTimeOrNull(offsets[1]),
+    isDone: reader.readBool(offsets[3]),
+    priority: _ItempriorityValueEnumMap[reader.readByteOrNull(offsets[4])] ??
+        Priority.low,
+    title: reader.readString(offsets[6]),
+  );
   return object;
 }
 
@@ -129,11 +141,15 @@ P _itemDeserializeProp<P>(
     case 1:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
+      return (reader.readBool(offset)) as P;
+    case 4:
       return (_ItempriorityValueEnumMap[reader.readByteOrNull(offset)] ??
           Priority.low) as P;
-    case 4:
+    case 5:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 6:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -457,6 +473,58 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterFilterCondition> hashCodeEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -567,6 +635,32 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> stringifyIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'stringify',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> stringifyIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'stringify',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> stringifyEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'stringify',
+        value: value,
       ));
     });
   }
@@ -797,6 +891,18 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> sortByIsDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDone', Sort.asc);
@@ -818,6 +924,18 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
   QueryBuilder<Item, Item, QAfterSortBy> sortByPriorityDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByStringify() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByStringifyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.desc);
     });
   }
 
@@ -859,6 +977,18 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -895,6 +1025,18 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> thenByStringify() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByStringifyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -922,6 +1064,12 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
     });
   }
 
+  QueryBuilder<Item, Item, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
   QueryBuilder<Item, Item, QDistinct> distinctByIsDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isDone');
@@ -931,6 +1079,12 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
   QueryBuilder<Item, Item, QDistinct> distinctByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'priority');
+    });
+  }
+
+  QueryBuilder<Item, Item, QDistinct> distinctByStringify() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'stringify');
     });
   }
 
@@ -961,6 +1115,12 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Item, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
+    });
+  }
+
   QueryBuilder<Item, bool, QQueryOperations> isDoneProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isDone');
@@ -970,6 +1130,12 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
   QueryBuilder<Item, Priority, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
+    });
+  }
+
+  QueryBuilder<Item, bool?, QQueryOperations> stringifyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'stringify');
     });
   }
 

@@ -1,28 +1,42 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:trackus/lib.dart';
 
 part 'project.g.dart';
 
-@collection
-class Project {
+@Collection(ignore: {'props'})
+class Project extends Equatable {
+  Project({
+    required this.name,
+    required this.colorValue,
+    required this.isFavorite,
+    required this.layout,
+    Project? parent,
+  }) {
+    this.parent.value = parent;
+  }
+
   /// The id of the project
   Id get id => Isar.autoIncrement;
 
   /// The name of the project
-  late String name;
+  final String name;
 
   /// The color of the project
-  late int colorValue;
+  final int colorValue;
 
   /// The parent project of the project
   final parent = IsarLink<Project>();
 
   /// Check if the project is favorite
-  late bool isFavorite;
+  final bool isFavorite;
 
   @enumerated
-  late Layout layout;
+  final Layout layout;
+
+  @override
+  List<Object?> get props => [id, name, colorValue, parent, isFavorite, layout];
 }
 
 extension ProjectExtension on Project {

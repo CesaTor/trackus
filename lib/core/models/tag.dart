@@ -1,18 +1,28 @@
+import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 
 part 'tag.g.dart';
 
-@collection
-class Tag {
+@Collection(ignore: {'props'})
+class Tag extends Equatable {
+  const Tag({
+    required this.name,
+    required this.colorValue,
+    required this.isFavorite,
+  });
+
   /// The id of the Tag
   Id get id => Isar.autoIncrement;
 
   /// The name of the Tag
-  late String name;
+  final String name;
 
   /// The color of the Tag
-  late int colorValue;
+  final int colorValue;
 
   /// Check if the Tag is favorite
-  late bool isFavorite;
+  final bool isFavorite;
+
+  @override
+  List<Object?> get props => [id, name, colorValue, isFavorite];
 }

@@ -7,10 +7,12 @@ part 'item_adder_options.dart';
 class ItemAdder extends StatefulWidget {
   const ItemAdder({
     required this.projects,
+    required this.onAdd,
     super.key,
   });
 
   final Iterable<Project> projects;
+  final void Function(Item item) onAdd;
 
   @override
   State<ItemAdder> createState() => _ItemAdderState();
@@ -43,10 +45,19 @@ class _ItemAdderState extends State<ItemAdder> {
         _Description(descriptionController),
         ItemAdderOptions(
           projects: widget.projects,
-          onSave: (project) {
-            print('Title: ${titleController.text}');
-            print('Description: ${descriptionController.text}');
-            print('Project: ${project.name}');
+          onSave: (project, dueDate, priority) {
+            final item = Item(
+              title: titleController.text,
+              isDone: false,
+              priority: priority,
+              description: descriptionController.text,
+              dueDate: dueDate,
+              project: project,
+              tags: List.empty(),
+            );
+
+            widget.onAdd(item);
+            Navigator.of(context).pop(item);
           },
         ),
       ],
