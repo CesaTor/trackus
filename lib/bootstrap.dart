@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:trackus/app/app.dart';
 import 'package:trackus/core/core.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -40,16 +41,14 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // Initialize Database
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [ItemSchema, EntrySchema],
+    [ItemSchema],
     directory: dir.path,
   );
 
   runApp(
-    RepositoryProvider(
-      create: (context) => isar,
-      child: TranslationProvider(
-        child: await builder(),
-      ),
+    RepositoryProvider<ItemRepository>(
+      create: (context) => ItemRepositoryImpl(isar),
+      child: TranslationProvider(child: await builder()),
     ),
   );
 }

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:isar/isar.dart';
 import 'package:trackus/app/app.dart';
-import 'package:trackus/app/data/repositories/entry_repository.dart';
-import 'package:trackus/app/domain/usecases/insert_entry.dart';
 import 'package:trackus/core/core.dart';
 
 class App extends StatelessWidget {
@@ -14,11 +11,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (c) => AppCubit(
-        getAllItems: GetAllItems(ItemRepositoryImpl(c.read<Isar>())),
-        insertItem: InsertItem(ItemRepositoryImpl(c.read<Isar>())),
-        clearItems: ClearItems(ItemRepositoryImpl(c.read<Isar>())),
-        deleteItemById: DeleteItemById(ItemRepositoryImpl(c.read<Isar>())),
-        insertEntry: InsertEntry(EntryRepositoryImpl(c.read<Isar>())),
+        getAllItems: GetAllItems(c.read()),
+        insertItem: InsertItem(c.read()),
+        clearItems: ClearItems(c.read()),
+        deleteItemById: DeleteItemById(c.read()),
       )..init(),
       child: MaterialApp.router(
         theme: lightTheme,
