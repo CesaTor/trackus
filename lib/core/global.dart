@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trackus/core/extensions/extensions.dart';
 
 final defaultColor = projectColors.first;
 
@@ -38,3 +39,7 @@ final projectColors = [
   Colors.deepPurpleAccent,
   Colors.white,
 ];
+
+DateTime get today => DateTime.now().end;
+
+DateTime get tomorrow => DateTime.now().add(const Duration(days: 1)).end;
