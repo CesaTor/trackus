@@ -13,8 +13,24 @@ class ItemRepositoryImpl implements ItemRepository {
   Future<List<Item>> getAllItems() => isar.items.where().findAll();
 
   @override
-  Future<int> insertItem(Item item) {
-    return isar.writeTxn(() => isar.items.put(item));
+  Future<int> insertItem(Item item) async {
+    int? id;
+    await isar.writeTxn(
+      () async {
+        id = await isar.items.put(item);
+        if (item.project.value != null) {
+          await isar.projects.put(item.project.value!);
+        }
+        await item.project.save();
+      },
+    );
+
+    return id ?? -1;
+  }
+
+  @override
+  Future<Item?> getItem(int id) {
+    return isar.items.filter().idEqualTo(id).findFirst();
   }
 
   @override
@@ -34,6 +50,9 @@ class ItemRepositoryImpl implements ItemRepository {
 
   @override
   Future<void> clearItems() => isar.writeTxn(() => isar.items.clear());
+
+  @override
+  Future<void> clearProjects() => isar.writeTxn(() => isar.projects.clear());
 
   // ----- filter methods -----
 

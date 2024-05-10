@@ -7,6 +7,9 @@ class InsertTodayItem {
 
   Future<Item> call(Item item) async {
     final id = await repository.insertItem(item);
-    return item.copyWith(id: id);
+
+    final savedItem = await repository.getItem(id);
+
+    return savedItem ?? item.copyWith(id: id);
   }
 }

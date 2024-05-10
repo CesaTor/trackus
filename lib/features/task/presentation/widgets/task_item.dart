@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackus/core/extensions/extensions.dart';
 import 'package:trackus/features/task/task.dart';
 import 'package:trackus/lib.dart';
 
@@ -41,18 +42,8 @@ class _TaskItem extends StatelessWidget {
             ? const TextStyle(decoration: TextDecoration.lineThrough)
             : null;
 
-        final description = item.description != null
-            ? Text(
-                item.description!,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle,
-                maxLines: 1,
-              )
-            : null;
-
         return Visibility(
           // visible: !(item.isDone && !showIfDone),
-          visible: true,
           child: Card(
             child: ListTile(
               leading: Checkbox(
@@ -64,7 +55,65 @@ class _TaskItem extends StatelessWidget {
                 },
               ),
               title: Text(item.title, style: textStyle),
-              subtitle: description,
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (item.description != null)
+                    Text(
+                      item.description!,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyle,
+                      maxLines: 1,
+                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (item.dueDate != null)
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.today,
+                              size: 16,
+                              color: item.priority.color,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              item.dueDate!.humanString,
+                              style: textStyle,
+                            ),
+                          ],
+                        )
+                      else
+                        const SizedBox(),
+                      FutureBuilder(
+                        future: item.project.load(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                                  ConnectionState.done ||
+                              item.project.value == null) {
+                            return const SizedBox();
+                          }
+
+                          return Row(
+                            children: [
+                              Text(
+                                item.project.value!.name,
+                                style: textStyle,
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(
+                                Icons.tag,
+                                size: 16,
+                                color: item.project.value!.colorValue.color,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

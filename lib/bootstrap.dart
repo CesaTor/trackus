@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -54,7 +54,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       await isar.projects.put(
         Project(
           name: 'Inbox',
-          colorValue: 0xFF000000,
+          colorValue: Colors.grey.value,
           isFavorite: true,
         ),
       );

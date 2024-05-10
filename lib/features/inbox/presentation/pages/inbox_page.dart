@@ -8,13 +8,15 @@ class InboxPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Inbox')),
-        body: Center(child: Text('Inbox Page')),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            ClearItems(context.read()).call();
-          },
-          child: Icon(Icons.add),
-        ));
+      appBar: AppBar(title: const Text('Inbox')),
+      body: const Center(child: Text('Inbox Page')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ClearItems(context.read()).call();
+          ClearProjects(context.read()).call();
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }

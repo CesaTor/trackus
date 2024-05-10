@@ -9,6 +9,8 @@ abstract class ItemRepository {
 
   Future<int> insertItem(Item item);
 
+  Future<Item?> getItem(int id);
+
   Future<int> insertProject(Project project);
 
   Future<int> updateItem(Item item);
@@ -24,6 +26,8 @@ abstract class ItemRepository {
   Future<bool> deleteProjectById(int id);
 
   Future<void> clearItems();
+
+  Future<void> clearProjects();
   // ----- filter methods -----
   Future<List<Item>> getItemsByDate(DateTime date, {bool includeDone = true});
 
