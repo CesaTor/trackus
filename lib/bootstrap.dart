@@ -3,24 +3,51 @@ import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:trackus/app/app.dart';
 import 'package:trackus/core/core.dart';
 
-class AppBlocObserver extends BlocObserver {
-  const AppBlocObserver();
-
+class AppProviderObserver extends ProviderObserver {
   @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    super.onChange(bloc, change);
-    log('onChange(${bloc.runtimeType}, $change)');
+  void didAddProvider(
+    ProviderBase<Object?> provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
+    log('didAddProvider(${provider.runtimeType}, $value)');
   }
 
   @override
-  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    log('onError(${bloc.runtimeType}, $error, $stackTrace)');
-    super.onError(bloc, error, stackTrace);
+  void providerDidFail(
+    ProviderBase<Object?> provider,
+    Object error,
+    StackTrace stackTrace,
+    ProviderContainer container,
+  ) {
+    log('providerDidFail(${provider.runtimeType}, $error, $stackTrace)');
+  }
+
+  @override
+  void didUpdateProvider(
+    ProviderBase<Object?> provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    log(
+      'didUpdateProvider(${provider.runtimeType}, $previousValue, $newValue)',
+    );
+  }
+
+  /// A provider was disposed
+  @override
+  void didDisposeProvider(
+    ProviderBase<Object?> provider,
+    ProviderContainer container,
+  ) {
+    log('didDisposeProvider(${provider.runtimeType})');
   }
 }
 
@@ -28,8 +55,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
-
-  Bloc.observer = const AppBlocObserver();
 
   // Add cross-flavor configuration here --------------------------------
   // Require flutter bridge initialization
@@ -39,41 +64,21 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   LocaleSettings.useDeviceLocale();
 
   // Initialize Database
-  final dir = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open(
-    [
-      ItemSchema,
-      ProjectSchema,
-      TagSchema,
-    ],
-    directory: dir.path,
-  );
-
-  // Initialize default project
-  if (await isar.projects.filter().nameEqualTo('Inbox').findFirst() == null) {
-    await isar.writeTxn(() async {
-      await isar.projects.put(
-        Project().builder(
-          name: 'Inbox',
-          colorValue: 0xFF000000,
-          isFavorite: true,
-          layout: Layout.list,
-        ),
-      );
-    });
-  }
 
   runApp(
-    MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider<ItemRepository>(
-          create: (context) => ItemRepositoryImpl(isar),
-        ),
-        RepositoryProvider<Isar>(
-          create: (context) => isar,
-        ),
-      ],
-      child: TranslationProvider(child: await builder()),
+    ProviderScope(
+      observers: [AppProviderObserver()],
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<ItemRepository>(
+            create: (context) => ItemRepository(isar),
+          ),
+          RepositoryProvider<Isar>(
+            create: (context) => isar,
+          ),
+        ],
+        child: TranslationProvider(child: await builder()),
+      ),
     ),
   );
 }

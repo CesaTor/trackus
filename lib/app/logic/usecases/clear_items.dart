@@ -1,4 +1,4 @@
-import 'package:trackus/app/domain/domain.dart';
+import 'package:trackus/app/app.dart';
 
 class ClearItems {
   ClearItems(this.repository);
