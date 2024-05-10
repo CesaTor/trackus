@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 2
+/// Strings: 1
 ///
-/// Built on 2024-05-09 at 14:33 UTC
+/// Built on 2024-05-10 at 09:25 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -141,7 +141,6 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 	late final _StringsCoreEn core = _StringsCoreEn._(_root);
-	late final _StringsAddEn add = _StringsAddEn._(_root);
 }
 
 // Path: core
@@ -152,14 +151,4 @@ class _StringsCoreEn {
 
 	// Translations
 	String get appName => 'Trackus';
-}
-
-// Path: add
-class _StringsAddEn {
-	_StringsAddEn._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-	String get save => 'SAVE';
 }

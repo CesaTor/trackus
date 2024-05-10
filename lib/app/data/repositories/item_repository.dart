@@ -99,4 +99,10 @@ class ItemRepositoryImpl implements ItemRepository {
   Future<int> updateTag(Tag tag) {
     return insertTag(tag);
   }
+
+  // ----- watch methods -----
+  @override
+  Stream<List<Item>> watchItems(int id) {
+    return isar.items.where().idEqualTo(id).watch();
+  }
 }

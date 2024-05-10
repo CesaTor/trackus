@@ -43,13 +43,18 @@ const ItemSchema = CollectionSchema(
       type: IsarType.byte,
       enumMap: _ItempriorityEnumValueMap,
     ),
-    r'stringify': PropertySchema(
+    r'reminderDateTime': PropertySchema(
       id: 5,
+      name: r'reminderDateTime',
+      type: IsarType.dateTime,
+    ),
+    r'stringify': PropertySchema(
+      id: 6,
       name: r'stringify',
       type: IsarType.bool,
     ),
     r'title': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'title',
       type: IsarType.string,
     )
@@ -108,8 +113,9 @@ void _itemSerialize(
   writer.writeLong(offsets[2], object.hashCode);
   writer.writeBool(offsets[3], object.isDone);
   writer.writeByte(offsets[4], object.priority.index);
-  writer.writeBool(offsets[5], object.stringify);
-  writer.writeString(offsets[6], object.title);
+  writer.writeDateTime(offsets[5], object.reminderDateTime);
+  writer.writeBool(offsets[6], object.stringify);
+  writer.writeString(offsets[7], object.title);
 }
 
 Item _itemDeserialize(
@@ -124,7 +130,8 @@ Item _itemDeserialize(
     isDone: reader.readBool(offsets[3]),
     priority: _ItempriorityValueEnumMap[reader.readByteOrNull(offsets[4])] ??
         Priority.low,
-    title: reader.readString(offsets[6]),
+    reminderDateTime: reader.readDateTimeOrNull(offsets[5]),
+    title: reader.readString(offsets[7]),
   );
   return object;
 }
@@ -148,8 +155,10 @@ P _itemDeserializeProp<P>(
       return (_ItempriorityValueEnumMap[reader.readByteOrNull(offset)] ??
           Priority.low) as P;
     case 5:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 6:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 7:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -639,6 +648,75 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterFilterCondition> reminderDateTimeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'reminderDateTime',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> reminderDateTimeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'reminderDateTime',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> reminderDateTimeEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'reminderDateTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> reminderDateTimeGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'reminderDateTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> reminderDateTimeLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'reminderDateTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> reminderDateTimeBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'reminderDateTime',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterFilterCondition> stringifyIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -927,6 +1005,18 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> sortByReminderDateTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reminderDateTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByReminderDateTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reminderDateTime', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> sortByStringify() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stringify', Sort.asc);
@@ -1025,6 +1115,18 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> thenByReminderDateTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reminderDateTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByReminderDateTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reminderDateTime', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> thenByStringify() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'stringify', Sort.asc);
@@ -1082,6 +1184,12 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
     });
   }
 
+  QueryBuilder<Item, Item, QDistinct> distinctByReminderDateTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'reminderDateTime');
+    });
+  }
+
   QueryBuilder<Item, Item, QDistinct> distinctByStringify() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'stringify');
@@ -1130,6 +1238,12 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
   QueryBuilder<Item, Priority, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
+    });
+  }
+
+  QueryBuilder<Item, DateTime?, QQueryOperations> reminderDateTimeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'reminderDateTime');
     });
   }
 

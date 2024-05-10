@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:trackus/lib.dart';
 
@@ -12,6 +13,7 @@ class Item extends Equatable {
     required this.priority,
     this.description,
     this.dueDate,
+    this.reminderDateTime,
     Project? project,
     List<Tag> tags = const [],
   }) {
@@ -34,6 +36,9 @@ class Item extends Equatable {
   /// The due date of the item.
   final DateTime? dueDate;
 
+  /// The reminder of the item.
+  final DateTime? reminderDateTime;
+
   /// The priority of the item.
   @enumerated
   final Priority priority;
@@ -55,4 +60,32 @@ class Item extends Equatable {
         project,
         tags,
       ];
+}
+
+extension ItemExtension on Item {
+  TimeOfDay? get reminder => reminderDateTime == null
+      ? null
+      : TimeOfDay.fromDateTime(reminderDateTime!);
+
+  Item copyWith({
+    String? title,
+    bool? isDone,
+    String? description,
+    DateTime? dueDate,
+    DateTime? reminderDateTime,
+    Priority? priority,
+    Project? project,
+    List<Tag>? tags,
+  }) {
+    return Item(
+      title: title ?? this.title,
+      isDone: isDone ?? this.isDone,
+      description: description ?? this.description,
+      dueDate: dueDate ?? this.dueDate,
+      reminderDateTime: reminderDateTime ?? this.reminderDateTime,
+      priority: priority ?? this.priority,
+      project: project ?? this.project.value,
+      tags: tags ?? this.tags.toList(),
+    );
+  }
 }

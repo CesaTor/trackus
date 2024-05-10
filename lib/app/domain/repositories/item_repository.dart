@@ -38,4 +38,6 @@ abstract class ItemRepository {
   Future<List<Item>> getItemsByDate(DateTime date, {bool includeDone = false});
 
   Future<List<Item>> getMissedItems();
+
+  Stream<List<Item>> watchItems(int id);
 }

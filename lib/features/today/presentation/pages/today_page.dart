@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trackus/features/today/today.dart';
+import 'package:trackus/features/task/presentation/widgets/task_item.dart';
 import 'package:trackus/lib.dart';
 
 class TodayPage extends StatelessWidget {
@@ -40,7 +40,7 @@ class _TodayView extends StatelessWidget {
             itemCount: items.length,
             itemBuilder: (context, index) {
               final item = items[index];
-              return ItemTile(item: item);
+              return TaskItem(item: item);
             },
           );
         },
