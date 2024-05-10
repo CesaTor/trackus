@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:trackus/features/task/task.dart';
@@ -17,7 +15,7 @@ class TaskUpdate extends TaskEvent {
   final Item item;
 
   @override
-  List<Object> get props => [Random().nextInt(1000)];
+  List<Object> get props => [item];
 }
 
 class TaskToggle extends TaskEvent {
@@ -30,17 +28,12 @@ class TaskToggle extends TaskEvent {
 class TaskBloc extends Bloc<TaskEvent, Item> {
   TaskBloc({
     required ToggleIsDone toggle,
-    required WatchItem watchItem,
     required Item item,
   }) : super(item) {
-    watchItem().listen((e) {
-      if (e != null) add(TaskUpdate(e));
-    });
-
     on<TaskEvent>(
       (event, emit) async => switch (event) {
         TaskUpdate() => emit(item),
-        TaskToggle() => await toggle(),
+        TaskToggle() => emit(await toggle(state)),
       },
     );
   }

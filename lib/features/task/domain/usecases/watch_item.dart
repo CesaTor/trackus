@@ -10,5 +10,8 @@ class WatchItem {
   final TaskRepository _repository;
   final Item item;
 
-  Stream<Item?> call() => _repository.watch(item.id);
+  Stream<Item?>? call() {
+    if (item.id == null) return null;
+    return _repository.watch(item.id!);
+  }
 }

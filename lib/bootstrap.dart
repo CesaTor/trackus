@@ -44,7 +44,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     [
       ItemSchema,
       ProjectSchema,
-      TagSchema,
     ],
     directory: dir.path,
   );
@@ -53,11 +52,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   if (await isar.projects.filter().nameEqualTo('Inbox').findFirst() == null) {
     await isar.writeTxn(() async {
       await isar.projects.put(
-        Project().builder(
+        Project(
           name: 'Inbox',
           colorValue: 0xFF000000,
           isFavorite: true,
-          layout: Layout.list,
         ),
       );
     });

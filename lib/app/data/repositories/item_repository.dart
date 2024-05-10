@@ -23,7 +23,10 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
-  Future<bool> deleteItem(Item item) => deleteItemById(item.id);
+  Future<bool> deleteItem(Item item) async {
+    if (item.id == null) return false;
+    return deleteItemById(item.id!);
+  }
 
   @override
   Future<bool> deleteItemById(int id) =>
@@ -54,8 +57,9 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
-  Future<bool> deleteProject(Project project) {
-    return deleteProjectById(project.id);
+  Future<bool> deleteProject(Project project) async {
+    if (project.id == null) return false;
+    return deleteProjectById(project.id!);
   }
 
   @override
@@ -64,23 +68,8 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
-  Future<bool> deleteTag(Tag tag) {
-    return deleteTagById(tag.id);
-  }
-
-  @override
-  Future<bool> deleteTagById(int id) {
-    return isar.writeTxn(() => isar.tags.delete(id));
-  }
-
-  @override
   Future<List<Project>> getAllProjects() {
     return isar.projects.where().findAll();
-  }
-
-  @override
-  Future<List<Tag>> getAllTags() {
-    return isar.tags.where().findAll();
   }
 
   @override
@@ -89,17 +78,7 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
-  Future<int> insertTag(Tag tag) {
-    return isar.writeTxn(() => isar.tags.put(tag));
-  }
-
-  @override
   Future<int> updateProject(Project project) {
     return insertProject(project);
-  }
-
-  @override
-  Future<int> updateTag(Tag tag) {
-    return insertTag(tag);
   }
 }

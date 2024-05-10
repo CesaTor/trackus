@@ -6,18 +6,19 @@ class TaskRepository {
 
   final Isar isar;
 
-  Future<int> toggleIsDone(Item item) async {
+  Future<Item> toggleIsDone(Item item) async {
     return isar.writeTxn(
       () async {
-        item.isDone = !item.isDone;
-        await isar.items.put(item);
-        return item.id;
+        final newItem = item.copyWith(isDone: !item.isDone);
+        newItem.id = await isar.items.put(newItem);
+        return newItem;
       },
     );
   }
 
-  Future<bool> delete(Item item) {
-    return isar.writeTxn(() => isar.items.delete(item.id));
+  Future<bool> delete(Item item) async {
+    if (item.id == null) return false;
+    return isar.writeTxn(() => isar.items.delete(item.id!));
   }
 
   Stream<Item?> watch(int id) => isar.items.watchObject(id);

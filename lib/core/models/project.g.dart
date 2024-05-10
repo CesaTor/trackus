@@ -88,14 +88,14 @@ Project _projectDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Project();
-  object.colorValue = reader.readLong(offsets[0]);
-  object.id = id;
-  object.isFavorite = reader.readBool(offsets[1]);
-  object.layout =
-      _ProjectlayoutValueEnumMap[reader.readByteOrNull(offsets[2])] ??
-          Layout.list;
-  object.name = reader.readString(offsets[3]);
+  final object = Project(
+    colorValue: reader.readLong(offsets[0]),
+    id: id,
+    isFavorite: reader.readBoolOrNull(offsets[1]) ?? false,
+    layout: _ProjectlayoutValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+        Layout.list,
+    name: reader.readString(offsets[3]),
+  );
   return object;
 }
 
@@ -109,7 +109,7 @@ P _projectDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readBool(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 2:
       return (_ProjectlayoutValueEnumMap[reader.readByteOrNull(offset)] ??
           Layout.list) as P;
@@ -132,7 +132,7 @@ const _ProjectlayoutValueEnumMap = {
 };
 
 Id _projectGetId(Project object) {
-  return object.id;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _projectGetLinks(Project object) {
@@ -274,7 +274,23 @@ extension ProjectQueryFilter
     });
   }
 
-  QueryBuilder<Project, Project, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<Project, Project, QAfterFilterCondition> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Project, Project, QAfterFilterCondition> idEqualTo(Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -284,7 +300,7 @@ extension ProjectQueryFilter
   }
 
   QueryBuilder<Project, Project, QAfterFilterCondition> idGreaterThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -297,7 +313,7 @@ extension ProjectQueryFilter
   }
 
   QueryBuilder<Project, Project, QAfterFilterCondition> idLessThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -310,8 +326,8 @@ extension ProjectQueryFilter
   }
 
   QueryBuilder<Project, Project, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {

@@ -46,14 +46,13 @@ class _ItemAdderState extends State<ItemAdder> {
         ItemAdderOptions(
           projects: widget.projects,
           onSave: (project, dueDate, priority) {
-            final item = Item().builder(
+            final item = Item(
               title: titleController.text,
               isDone: false,
               priority: priority,
               description: descriptionController.text,
               dueDate: dueDate,
               project: project,
-              tags: List.empty(),
             );
 
             widget.onAdd(item);

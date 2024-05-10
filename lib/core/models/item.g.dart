@@ -61,12 +61,6 @@ const ItemSchema = CollectionSchema(
       name: r'project',
       target: r'Project',
       single: true,
-    ),
-    r'tags': LinkSchema(
-      id: -1444298628167129272,
-      name: r'tags',
-      target: r'Tag',
-      single: false,
     )
   },
   embeddedSchemas: {},
@@ -112,16 +106,16 @@ Item _itemDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Item();
-  object.description = reader.readStringOrNull(offsets[0]);
-  object.dueDate = reader.readDateTimeOrNull(offsets[1]);
-  object.id = id;
-  object.isDone = reader.readBool(offsets[2]);
-  object.priority =
-      _ItempriorityValueEnumMap[reader.readByteOrNull(offsets[3])] ??
-          Priority.low;
-  object.reminderDateTime = reader.readDateTimeOrNull(offsets[4]);
-  object.title = reader.readString(offsets[5]);
+  final object = Item(
+    description: reader.readStringOrNull(offsets[0]),
+    dueDate: reader.readDateTimeOrNull(offsets[1]),
+    id: id,
+    isDone: reader.readBool(offsets[2]),
+    priority: _ItempriorityValueEnumMap[reader.readByteOrNull(offsets[3])] ??
+        Priority.none,
+    reminderDateTime: reader.readDateTimeOrNull(offsets[4]),
+    title: reader.readString(offsets[5]),
+  );
   return object;
 }
 
@@ -140,7 +134,7 @@ P _itemDeserializeProp<P>(
       return (reader.readBool(offset)) as P;
     case 3:
       return (_ItempriorityValueEnumMap[reader.readByteOrNull(offset)] ??
-          Priority.low) as P;
+          Priority.none) as P;
     case 4:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 5:
@@ -164,17 +158,16 @@ const _ItempriorityValueEnumMap = {
 };
 
 Id _itemGetId(Item object) {
-  return object.id;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _itemGetLinks(Item object) {
-  return [object.project, object.tags];
+  return [object.project];
 }
 
 void _itemAttach(IsarCollection<dynamic> col, Id id, Item object) {
   object.id = id;
   object.project.attach(col, col.isar.collection<Project>(), r'project', id);
-  object.tags.attach(col, col.isar.collection<Tag>(), r'tags', id);
 }
 
 extension ItemQueryWhereSort on QueryBuilder<Item, Item, QWhere> {
@@ -468,7 +461,23 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Item, Item, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<Item, Item, QAfterFilterCondition> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> idEqualTo(Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -478,7 +487,7 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
   }
 
   QueryBuilder<Item, Item, QAfterFilterCondition> idGreaterThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -491,7 +500,7 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
   }
 
   QueryBuilder<Item, Item, QAfterFilterCondition> idLessThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -504,8 +513,8 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
   }
 
   QueryBuilder<Item, Item, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -793,61 +802,6 @@ extension ItemQueryLinks on QueryBuilder<Item, Item, QFilterCondition> {
   QueryBuilder<Item, Item, QAfterFilterCondition> projectIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'project', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> tags(FilterQuery<Tag> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'tags');
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> tagsLengthEqualTo(
-      int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'tags', length, true, length, true);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> tagsIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'tags', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> tagsIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'tags', 0, false, 999999, true);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> tagsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'tags', 0, true, length, include);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> tagsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'tags', length, include, 999999, true);
-    });
-  }
-
-  QueryBuilder<Item, Item, QAfterFilterCondition> tagsLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(
-          r'tags', lower, includeLower, upper, includeUpper);
     });
   }
 }

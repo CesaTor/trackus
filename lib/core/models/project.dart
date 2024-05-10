@@ -8,44 +8,16 @@ part 'project.g.dart';
 @Collection(ignore: {'props'}, inheritance: false)
 // ignore: must_be_immutable
 class Project extends Equatable {
-  /// The id of the project
-  late Id id = Isar.autoIncrement;
-
-  /// The name of the project
-  late String name;
-
-  /// The color of the project
-  late int colorValue;
-
-  /// The parent project of the project
-  final parent = IsarLink<Project>();
-
-  /// Check if the project is favorite
-  late bool isFavorite;
-
-  @enumerated
-  late Layout layout;
-
-  @override
-  List<Object?> get props => [id, name, colorValue, parent, isFavorite, layout];
-}
-
-extension ProjectExtension on Project {
-  IconData get icon => name == 'Inbox' ? Icons.inbox_outlined : Icons.folder;
-
-  Project builder({
-    required String name,
-    required int colorValue,
-    required bool isFavorite,
-    required Layout layout,
+  Project({
+    required this.name,
+    required this.colorValue,
+    this.id,
+    this.isFavorite = false,
+    this.layout = Layout.list,
     Project? parent,
-  }) =>
-      this
-        ..name = name
-        ..colorValue = colorValue
-        ..isFavorite = isFavorite
-        ..layout = layout
-        ..parent.value = parent;
+  }) {
+    this.parent.value = parent;
+  }
 
   Project copyWith({
     Id? id,
@@ -55,11 +27,37 @@ extension ProjectExtension on Project {
     Layout? layout,
     Project? parent,
   }) =>
-      this
-        ..id = id ?? this.id
-        ..name = name ?? this.name
-        ..colorValue = colorValue ?? this.colorValue
-        ..isFavorite = isFavorite ?? this.isFavorite
-        ..layout = layout ?? this.layout
-        ..parent.value = parent ?? this.parent.value;
+      Project(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        colorValue: colorValue ?? this.colorValue,
+        isFavorite: isFavorite ?? this.isFavorite,
+        layout: layout ?? this.layout,
+        parent: parent ?? this.parent.value,
+      );
+
+  /// The id of the project
+  late Id? id = Isar.autoIncrement;
+
+  /// The name of the project
+  final String name;
+
+  /// The color of the project
+  final int colorValue;
+
+  /// The parent project of the project
+  final parent = IsarLink<Project>();
+
+  /// Check if the project is favorite
+  final bool isFavorite;
+
+  @enumerated
+  final Layout layout;
+
+  @override
+  List<Object?> get props => [id, name, colorValue, parent, isFavorite, layout];
+}
+
+extension ProjectExtension on Project {
+  IconData get icon => name == 'Inbox' ? Icons.inbox_outlined : Icons.folder;
 }

@@ -19,8 +19,7 @@ class TaskItem extends StatelessWidget {
       child: BlocProvider(
         create: (context) => TaskBloc(
           item: item,
-          toggle: ToggleIsDone(context.read(), item),
-          watchItem: WatchItem(context.read(), item),
+          toggle: ToggleIsDone(context.read()),
         ),
         child: _TaskItem(showIfDone: showIfDone),
       ),
