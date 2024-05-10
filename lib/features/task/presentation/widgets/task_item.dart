@@ -37,31 +37,31 @@ class _TaskItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final item = context.select((TaskCubit value) => value.state);
 
+    final textStyle = item.isDone
+        ? const TextStyle(decoration: TextDecoration.lineThrough)
+        : null;
+
+    final description = item.description != null
+        ? Text(
+            item.description!,
+            overflow: TextOverflow.ellipsis,
+            style: textStyle,
+            maxLines: 1,
+          )
+        : null;
+
     return Visibility(
       visible: !(item.isDone && !showIfDone),
       child: Card(
         child: ListTile(
           leading: Checkbox(
+            side: BorderSide(color: item.priority.color),
             value: item.isDone,
-            onChanged: (_) {
-              context.read<TaskCubit>().toggle();
-            },
+            activeColor: Colors.grey,
+            onChanged: (_) => context.read<TaskCubit>().toggle(),
           ),
-          title: Text(
-            item.title,
-            style: item.isDone
-                ? const TextStyle(decoration: TextDecoration.lineThrough)
-                : null,
-          ),
-          subtitle: item.description != null
-              ? Text(
-                  item.description!,
-                  overflow: TextOverflow.ellipsis,
-                  style: item.isDone
-                      ? const TextStyle(decoration: TextDecoration.lineThrough)
-                      : null,
-                )
-              : null,
+          title: Text(item.title, style: textStyle),
+          subtitle: description,
         ),
       ),
     );

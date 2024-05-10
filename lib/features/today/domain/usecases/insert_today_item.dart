@@ -1,8 +1,8 @@
 import 'package:trackus/app/app.dart';
 import 'package:trackus/core/core.dart';
 
-class InsertItem {
-  InsertItem(this.repository);
+class InsertTodayItem {
+  InsertTodayItem(this.repository);
   final ItemRepository repository;
 
   Future<Item> call(Item item) async {

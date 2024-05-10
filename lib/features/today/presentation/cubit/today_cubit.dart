@@ -1,21 +1,33 @@
 import 'package:bloc/bloc.dart';
-import 'package:trackus/features/today/domain/usecases/get_today_items.dart';
-import 'package:trackus/features/today/presentation/cubit/today_state.dart';
 import 'package:trackus/lib.dart';
 
 class TodayCubit extends Cubit<TodayState> {
   TodayCubit({
-    required this.getTodayItems,
-    required this.getAllProjects,
-  }) : super(TodayState.initial());
+    required GetTodayItems getTodayItems,
+    required GetAllProjects getAllProjects,
+    required InsertTodayItem insertTodayItem,
+  })  : _getTodayItems = getTodayItems,
+        _getAllProjects = getAllProjects,
+        _insertTodayItem = insertTodayItem,
+        super(TodayState.initial());
 
-  final GetTodayItems getTodayItems;
-  final GetAllProjects getAllProjects;
+  final GetTodayItems _getTodayItems;
+  final GetAllProjects _getAllProjects;
+  final InsertTodayItem _insertTodayItem;
 
   Future<void> init() async {
     emit(state.loading());
-    final items = await getTodayItems();
-    final projects = await getAllProjects();
-    emit(state.loaded(items, projects));
+    final data = await _update();
+    emit(state.loaded(data.$1, data.$2));
+  }
+
+  Future<(List<Item> items, List<Project> projects)> _update() async {
+    return (await _getTodayItems(), await _getAllProjects());
+  }
+
+  Future<void> insertTodayItem(Item item) async {
+    await _insertTodayItem(item);
+    final data = await _update();
+    emit(state.loaded(data.$1, data.$2));
   }
 }

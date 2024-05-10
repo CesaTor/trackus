@@ -12,7 +12,6 @@ class App extends StatelessWidget {
     return BlocProvider(
       create: (c) => AppCubit(
         getAllItems: GetAllItems(c.read()),
-        insertItem: InsertItem(c.read()),
         clearItems: ClearItems(c.read()),
         deleteItemById: DeleteItemById(c.read()),
       )..init(),

@@ -74,11 +74,11 @@ Tag _tagDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Tag(
-    colorValue: reader.readLong(offsets[0]),
-    isFavorite: reader.readBool(offsets[1]),
-    name: reader.readString(offsets[2]),
-  );
+  final object = Tag();
+  object.colorValue = reader.readLong(offsets[0]);
+  object.id = id;
+  object.isFavorite = reader.readBool(offsets[1]);
+  object.name = reader.readString(offsets[2]);
   return object;
 }
 
@@ -108,7 +108,9 @@ List<IsarLinkBase<dynamic>> _tagGetLinks(Tag object) {
   return [];
 }
 
-void _tagAttach(IsarCollection<dynamic> col, Id id, Tag object) {}
+void _tagAttach(IsarCollection<dynamic> col, Id id, Tag object) {
+  object.id = id;
+}
 
 extension TagQueryWhereSort on QueryBuilder<Tag, Tag, QWhere> {
   QueryBuilder<Tag, Tag, QAfterWhere> anyId() {

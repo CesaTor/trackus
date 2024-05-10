@@ -9,7 +9,7 @@ part 'item.g.dart';
 // ignore: must_be_immutable
 class Item extends Equatable {
   /// The id of the item.
-  late Id id;
+  late Id id = Isar.autoIncrement;
 
   /// The name of the item.
   late String title;
@@ -78,6 +78,7 @@ extension ItemExtension on Item {
   }
 
   Item copyWith({
+    Id? id,
     String? title,
     bool? isDone,
     String? description,
@@ -88,6 +89,7 @@ extension ItemExtension on Item {
     List<Tag>? tags,
   }) {
     this
+      ..id = id ?? this.id
       ..title = title ?? this.title
       ..isDone = isDone ?? this.isDone
       ..description = description ?? this.description

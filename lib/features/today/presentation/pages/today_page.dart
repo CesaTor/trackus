@@ -12,6 +12,7 @@ class TodayPage extends StatelessWidget {
       create: (_) => TodayCubit(
         getTodayItems: GetTodayItems(context.read()),
         getAllProjects: GetAllProjects(context.read()),
+        insertTodayItem: InsertTodayItem(context.read()),
       )..init(),
       child: _TodayView(),
     );
@@ -24,7 +25,7 @@ class _TodayView extends StatelessWidget {
   }
 
   void addItem(BuildContext context, Item item) {
-    context.read<AppCubit>().addItem(item).then((_) => updateState(context));
+    context.read<TodayCubit>().insertTodayItem(item);
   }
 
   @override

@@ -9,7 +9,7 @@ part 'project.g.dart';
 // ignore: must_be_immutable
 class Project extends Equatable {
   /// The id of the project
-  late Id id;
+  late Id id = Isar.autoIncrement;
 
   /// The name of the project
   late String name;
@@ -48,6 +48,7 @@ extension ProjectExtension on Project {
         ..parent.value = parent;
 
   Project copyWith({
+    Id? id,
     String? name,
     int? colorValue,
     bool? isFavorite,
@@ -55,6 +56,7 @@ extension ProjectExtension on Project {
     Project? parent,
   }) =>
       this
+        ..id = id ?? this.id
         ..name = name ?? this.name
         ..colorValue = colorValue ?? this.colorValue
         ..isFavorite = isFavorite ?? this.isFavorite

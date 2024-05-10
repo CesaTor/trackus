@@ -20,7 +20,5 @@ class TaskRepository {
     return isar.writeTxn(() => isar.items.delete(item.id));
   }
 
-  Stream<Item?> watch(int id) {
-    return isar.items.watchObject(id);
-  }
+  Stream<Item?> watch(int id) => isar.items.watchObject(id);
 }
