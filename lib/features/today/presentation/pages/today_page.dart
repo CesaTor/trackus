@@ -36,11 +36,17 @@ class _TodayView extends StatelessWidget {
       body: BlocBuilder<TodayCubit, TodayState>(
         builder: (context, state) {
           final items = state.items;
+          debugPrint('TodayPage: items.length=${items.length}');
+
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
               final item = items[index];
-              return TaskItem(item: item);
+              return TaskItem(
+                key: ValueKey(item.id),
+                item: item,
+                showIfDone: true,
+              );
             },
           );
         },
@@ -53,9 +59,7 @@ class _TodayView extends StatelessWidget {
               context: context,
               builder: (context) => ItemAdder(
                 projects: projects,
-                onAdd: (item) {
-                  addItem(currContext, item);
-                },
+                onAdd: (item) => addItem(currContext, item),
               ),
               shape: const BeveledRectangleBorder(),
             );

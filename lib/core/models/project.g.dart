@@ -22,31 +22,21 @@ const ProjectSchema = CollectionSchema(
       name: r'colorValue',
       type: IsarType.long,
     ),
-    r'hashCode': PropertySchema(
-      id: 1,
-      name: r'hashCode',
-      type: IsarType.long,
-    ),
     r'isFavorite': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'isFavorite',
       type: IsarType.bool,
     ),
     r'layout': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'layout',
       type: IsarType.byte,
       enumMap: _ProjectlayoutEnumValueMap,
     ),
     r'name': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'name',
       type: IsarType.string,
-    ),
-    r'stringify': PropertySchema(
-      id: 5,
-      name: r'stringify',
-      type: IsarType.bool,
     )
   },
   estimateSize: _projectEstimateSize,
@@ -87,11 +77,9 @@ void _projectSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.colorValue);
-  writer.writeLong(offsets[1], object.hashCode);
-  writer.writeBool(offsets[2], object.isFavorite);
-  writer.writeByte(offsets[3], object.layout.index);
-  writer.writeString(offsets[4], object.name);
-  writer.writeBool(offsets[5], object.stringify);
+  writer.writeBool(offsets[1], object.isFavorite);
+  writer.writeByte(offsets[2], object.layout.index);
+  writer.writeString(offsets[3], object.name);
 }
 
 Project _projectDeserialize(
@@ -100,13 +88,14 @@ Project _projectDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Project(
-    colorValue: reader.readLong(offsets[0]),
-    isFavorite: reader.readBool(offsets[2]),
-    layout: _ProjectlayoutValueEnumMap[reader.readByteOrNull(offsets[3])] ??
-        Layout.list,
-    name: reader.readString(offsets[4]),
-  );
+  final object = Project();
+  object.colorValue = reader.readLong(offsets[0]);
+  object.id = id;
+  object.isFavorite = reader.readBool(offsets[1]);
+  object.layout =
+      _ProjectlayoutValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+          Layout.list;
+  object.name = reader.readString(offsets[3]);
   return object;
 }
 
@@ -120,16 +109,12 @@ P _projectDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
-    case 2:
       return (reader.readBool(offset)) as P;
-    case 3:
+    case 2:
       return (_ProjectlayoutValueEnumMap[reader.readByteOrNull(offset)] ??
           Layout.list) as P;
-    case 4:
+    case 3:
       return (reader.readString(offset)) as P;
-    case 5:
-      return (reader.readBoolOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -155,6 +140,7 @@ List<IsarLinkBase<dynamic>> _projectGetLinks(Project object) {
 }
 
 void _projectAttach(IsarCollection<dynamic> col, Id id, Project object) {
+  object.id = id;
   object.parent.attach(col, col.isar.collection<Project>(), r'parent', id);
 }
 
@@ -280,59 +266,6 @@ extension ProjectQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'colorValue',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> hashCodeEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> hashCodeGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> hashCodeLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> hashCodeBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hashCode',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -585,32 +518,6 @@ extension ProjectQueryFilter
       ));
     });
   }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> stringifyIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'stringify',
-      ));
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> stringifyIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'stringify',
-      ));
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterFilterCondition> stringifyEqualTo(
-      bool? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'stringify',
-        value: value,
-      ));
-    });
-  }
 }
 
 extension ProjectQueryObject
@@ -642,18 +549,6 @@ extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
   QueryBuilder<Project, Project, QAfterSortBy> sortByColorValueDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'colorValue', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> sortByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> sortByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -692,18 +587,6 @@ extension ProjectQuerySortBy on QueryBuilder<Project, Project, QSortBy> {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
-
-  QueryBuilder<Project, Project, QAfterSortBy> sortByStringify() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringify', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> sortByStringifyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringify', Sort.desc);
-    });
-  }
 }
 
 extension ProjectQuerySortThenBy
@@ -717,18 +600,6 @@ extension ProjectQuerySortThenBy
   QueryBuilder<Project, Project, QAfterSortBy> thenByColorValueDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'colorValue', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> thenByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> thenByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -779,18 +650,6 @@ extension ProjectQuerySortThenBy
       return query.addSortBy(r'name', Sort.desc);
     });
   }
-
-  QueryBuilder<Project, Project, QAfterSortBy> thenByStringify() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringify', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Project, Project, QAfterSortBy> thenByStringifyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'stringify', Sort.desc);
-    });
-  }
 }
 
 extension ProjectQueryWhereDistinct
@@ -798,12 +657,6 @@ extension ProjectQueryWhereDistinct
   QueryBuilder<Project, Project, QDistinct> distinctByColorValue() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'colorValue');
-    });
-  }
-
-  QueryBuilder<Project, Project, QDistinct> distinctByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hashCode');
     });
   }
 
@@ -825,12 +678,6 @@ extension ProjectQueryWhereDistinct
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
   }
-
-  QueryBuilder<Project, Project, QDistinct> distinctByStringify() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'stringify');
-    });
-  }
 }
 
 extension ProjectQueryProperty
@@ -844,12 +691,6 @@ extension ProjectQueryProperty
   QueryBuilder<Project, int, QQueryOperations> colorValueProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'colorValue');
-    });
-  }
-
-  QueryBuilder<Project, int, QQueryOperations> hashCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hashCode');
     });
   }
 
@@ -868,12 +709,6 @@ extension ProjectQueryProperty
   QueryBuilder<Project, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
-    });
-  }
-
-  QueryBuilder<Project, bool?, QQueryOperations> stringifyProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'stringify');
     });
   }
 }

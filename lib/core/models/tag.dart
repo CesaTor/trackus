@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 
 part 'tag.g.dart';
 
-@Collection(ignore: {'props'})
+@Collection(ignore: {'props'}, inheritance: false)
 class Tag extends Equatable {
   const Tag({
     required this.name,

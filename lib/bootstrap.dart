@@ -50,10 +50,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   );
 
   // Initialize default project
-  if (isar.projects.filter().nameEqualTo('Inbox').findFirstSync() == null) {
-    isar.writeTxnSync(() {
-      isar.projects.putSync(
-        Project(
+  if (await isar.projects.filter().nameEqualTo('Inbox').findFirst() == null) {
+    await isar.writeTxn(() async {
+      await isar.projects.put(
+        Project().builder(
           name: 'Inbox',
           colorValue: 0xFF000000,
           isFavorite: true,
@@ -64,8 +64,15 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   }
 
   runApp(
-    RepositoryProvider<ItemRepository>(
-      create: (context) => ItemRepositoryImpl(isar),
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<ItemRepository>(
+          create: (context) => ItemRepositoryImpl(isar),
+        ),
+        RepositoryProvider<Isar>(
+          create: (context) => isar,
+        ),
+      ],
       child: TranslationProvider(child: await builder()),
     ),
   );

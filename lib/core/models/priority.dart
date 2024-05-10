@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-enum Priority { low, medium, high, none }
+enum Priority {
+  low,
+  medium,
+  high,
+  none;
 
-extension PriorityExtension on Priority {
   Color get color {
     switch (this) {
       case Priority.low:
-        return Colors.green;
+        return Colors.blue;
       case Priority.medium:
         return Colors.orange;
       case Priority.high:

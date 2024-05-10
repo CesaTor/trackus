@@ -13,11 +13,14 @@ class ItemRepositoryImpl implements ItemRepository {
   Future<List<Item>> getAllItems() => isar.items.where().findAll();
 
   @override
-  Future<int> insertItem(Item item) =>
-      isar.writeTxn(() => isar.items.put(item));
+  Future<int> insertItem(Item item) {
+    return isar.writeTxn(() => isar.items.put(item));
+  }
 
   @override
-  Future<int> updateItem(Item item) => insertItem(item);
+  Future<int> updateItem(Item item) {
+    return isar.writeTxn(() => isar.items.put(item));
+  }
 
   @override
   Future<bool> deleteItem(Item item) => deleteItemById(item.id);
@@ -98,11 +101,5 @@ class ItemRepositoryImpl implements ItemRepository {
   @override
   Future<int> updateTag(Tag tag) {
     return insertTag(tag);
-  }
-
-  // ----- watch methods -----
-  @override
-  Stream<List<Item>> watchItems(int id) {
-    return isar.items.where().idEqualTo(id).watch();
   }
 }

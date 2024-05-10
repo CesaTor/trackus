@@ -1,24 +1,23 @@
 import 'package:bloc/bloc.dart';
-import 'package:trackus/features/task/domain/usecases/watch_item.dart';
+import 'package:trackus/features/task/task.dart';
 import 'package:trackus/lib.dart';
 
 class TaskCubit extends Cubit<Item> {
   TaskCubit({
     required this.item,
-    required this.updateItem,
-    required WatchItem watchItem,
-  }) : super(item) {
-    // Watch the db item update and sync
-    watchItem(item.id)?.listen(emit);
-  }
+    required this.toggle,
+    required this.watchItem,
+  }) : super(item);
 
-  final UpdateItem updateItem;
-
+  final ToggleIsDone toggle;
+  final WatchItem watchItem;
   final Item item;
 
-  Future<void> toggle({bool? isDone = false}) async {
-    final newItem = state.copyWith(isDone: isDone);
-    await updateItem(newItem);
-    emit(newItem);
+  void init() {
+    // Watch the db item update and sync
+    watchItem().listen((e) {
+      if (e != null) emit(e);
+    });
+    emit(item);
   }
 }

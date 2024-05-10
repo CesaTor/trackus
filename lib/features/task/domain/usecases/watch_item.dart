@@ -1,16 +1,14 @@
+import 'package:trackus/features/task/task.dart';
 import 'package:trackus/lib.dart';
 
 class WatchItem {
-  WatchItem(this._repository);
+  WatchItem(
+    this._repository,
+    this.item,
+  );
 
-  final ItemRepository _repository;
+  final TaskRepository _repository;
+  final Item item;
 
-  Stream<Item>? call(int id) {
-    try {
-      final streams = _repository.watchItems(id);
-      return streams.map((event) => event.first);
-    } on Exception catch (_) {
-      return null;
-    }
-  }
+  Stream<Item?> call() => _repository.watch(item.id);
 }

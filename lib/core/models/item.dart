@@ -5,43 +5,30 @@ import 'package:trackus/lib.dart';
 
 part 'item.g.dart';
 
-@Collection(ignore: {'props'})
+@Collection(ignore: {'props'}, inheritance: false)
+// ignore: must_be_immutable
 class Item extends Equatable {
-  Item({
-    required this.title,
-    required this.isDone,
-    required this.priority,
-    this.description,
-    this.dueDate,
-    this.reminderDateTime,
-    Project? project,
-    List<Tag> tags = const [],
-  }) {
-    this.project.value = project;
-    this.tags.addAll(tags);
-  }
-
   /// The id of the item.
-  Id get id => Isar.autoIncrement;
+  late Id id;
 
   /// The name of the item.
-  final String title;
+  late String title;
 
   /// The status of the item.
-  final bool isDone;
+  late bool isDone;
 
   /// The description of the item.
-  final String? description;
+  late String? description;
 
   /// The due date of the item.
-  final DateTime? dueDate;
+  late DateTime? dueDate;
 
   /// The reminder of the item.
-  final DateTime? reminderDateTime;
+  late DateTime? reminderDateTime;
 
   /// The priority of the item.
   @enumerated
-  final Priority priority;
+  late Priority priority;
 
   /// The project of the item, null if Inbox
   final project = IsarLink<Project>();
@@ -67,6 +54,29 @@ extension ItemExtension on Item {
       ? null
       : TimeOfDay.fromDateTime(reminderDateTime!);
 
+  Item builder({
+    required String title,
+    required bool isDone,
+    required String? description,
+    required Project? project,
+    required List<Tag>? tags,
+    DateTime? reminderDateTime,
+    DateTime? dueDate,
+    Priority priority = Priority.none,
+  }) {
+    this
+      ..title = title
+      ..isDone = isDone
+      ..description = description
+      ..dueDate = dueDate
+      ..reminderDateTime = reminderDateTime
+      ..priority = priority
+      ..project.value = project
+      ..tags.addAll(tags ?? []);
+
+    return this;
+  }
+
   Item copyWith({
     String? title,
     bool? isDone,
@@ -77,15 +87,16 @@ extension ItemExtension on Item {
     Project? project,
     List<Tag>? tags,
   }) {
-    return Item(
-      title: title ?? this.title,
-      isDone: isDone ?? this.isDone,
-      description: description ?? this.description,
-      dueDate: dueDate ?? this.dueDate,
-      reminderDateTime: reminderDateTime ?? this.reminderDateTime,
-      priority: priority ?? this.priority,
-      project: project ?? this.project.value,
-      tags: tags ?? this.tags.toList(),
-    );
+    this
+      ..title = title ?? this.title
+      ..isDone = isDone ?? this.isDone
+      ..description = description ?? this.description
+      ..dueDate = dueDate ?? this.dueDate
+      ..reminderDateTime = reminderDateTime ?? this.reminderDateTime
+      ..priority = priority ?? this.priority
+      ..project.value = project ?? this.project.value
+      ..tags.addAll(tags ?? []);
+
+    return this;
   }
 }
