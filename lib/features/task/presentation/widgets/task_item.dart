@@ -17,11 +17,11 @@ class TaskItem extends StatelessWidget {
     return RepositoryProvider(
       create: (context) => TaskRepository(context.read()),
       child: BlocProvider(
-        create: (context) => TaskCubit(
+        create: (context) => TaskBloc(
           item: item,
           toggle: ToggleIsDone(context.read(), item),
           watchItem: WatchItem(context.read(), item),
-        )..init(),
+        ),
         child: _TaskItem(showIfDone: showIfDone),
       ),
     );
@@ -35,35 +35,41 @@ class _TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final item = context.select((TaskCubit value) => value.state);
+    return BlocBuilder<TaskBloc, Item>(
+      builder: (context, state) {
+        final item = state;
+        final textStyle = item.isDone
+            ? const TextStyle(decoration: TextDecoration.lineThrough)
+            : null;
 
-    final textStyle = item.isDone
-        ? const TextStyle(decoration: TextDecoration.lineThrough)
-        : null;
+        final description = item.description != null
+            ? Text(
+                item.description!,
+                overflow: TextOverflow.ellipsis,
+                style: textStyle,
+                maxLines: 1,
+              )
+            : null;
 
-    final description = item.description != null
-        ? Text(
-            item.description!,
-            overflow: TextOverflow.ellipsis,
-            style: textStyle,
-            maxLines: 1,
-          )
-        : null;
-
-    return Visibility(
-      visible: !(item.isDone && !showIfDone),
-      child: Card(
-        child: ListTile(
-          leading: Checkbox(
-            side: BorderSide(color: item.priority.color),
-            value: item.isDone,
-            activeColor: Colors.grey,
-            onChanged: (_) => context.read<TaskCubit>().toggle(),
+        return Visibility(
+          // visible: !(item.isDone && !showIfDone),
+          visible: true,
+          child: Card(
+            child: ListTile(
+              leading: Checkbox(
+                side: BorderSide(color: item.priority.color),
+                value: item.isDone,
+                activeColor: Colors.grey,
+                onChanged: (_) {
+                  context.read<TaskBloc>().add(const TaskToggle());
+                },
+              ),
+              title: Text(item.title, style: textStyle),
+              subtitle: description,
+            ),
           ),
-          title: Text(item.title, style: textStyle),
-          subtitle: description,
-        ),
-      ),
+        );
+      },
     );
   }
 }
