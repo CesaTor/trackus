@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:trackus/lib.dart';
 
-class TodayCubit extends Cubit<TodayState> {
-  TodayCubit({
-    required GetTodayItems getTodayItems,
+class InboxCubit extends Cubit<InboxState> {
+  InboxCubit({
+    required GetInboxItems getItems,
     required GetAllProjects getAllProjects,
     required InsertItem insertItem,
-  })  : _getTodayItems = getTodayItems,
+  })  : _getItems = getItems,
         _getAllProjects = getAllProjects,
         _insertItem = insertItem,
-        super(TodayState.initial());
+        super(InboxState.initial());
 
-  final GetTodayItems _getTodayItems;
+  final GetInboxItems _getItems;
   final GetAllProjects _getAllProjects;
   final InsertItem _insertItem;
 
@@ -22,10 +22,10 @@ class TodayCubit extends Cubit<TodayState> {
   }
 
   Future<(List<Item> items, List<Project> projects)> _update() async {
-    return (await _getTodayItems(), await _getAllProjects());
+    return (await _getItems(), await _getAllProjects());
   }
 
-  Future<void> insertTodayItem(Item item) async {
+  Future<void> insertItem(Item item) async {
     await _insertItem(item);
     final data = await _update();
     emit(state.loaded(data.$1, data.$2));

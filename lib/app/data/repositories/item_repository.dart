@@ -59,9 +59,20 @@ class ItemRepositoryImpl implements ItemRepository {
   @override
   Future<List<Item>> getItemsByDate(
     DateTime date, {
-    bool includeDone = false,
+    bool includeDone = true,
   }) {
     final query = isar.items.filter().dueDateBetween(date.start, date.end);
+
+    return includeDone ? query.findAll() : query.isDoneEqualTo(false).findAll();
+  }
+
+  @override
+  Future<List<Item>> getItemsByProjectName(
+    String projectName, {
+    bool includeDone = true,
+  }) {
+    final query =
+        isar.items.filter().project((q) => q.nameEqualTo(projectName));
 
     return includeDone ? query.findAll() : query.isDoneEqualTo(false).findAll();
   }

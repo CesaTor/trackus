@@ -49,7 +49,7 @@ class _TaskItem extends StatelessWidget {
               leading: Checkbox(
                 side: BorderSide(color: item.priority.color),
                 value: item.isDone,
-                activeColor: Colors.grey,
+                activeColor: item.priority.color,
                 onChanged: (_) {
                   context.read<TaskBloc>().add(const TaskToggle());
                 },
