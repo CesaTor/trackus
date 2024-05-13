@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trackus/features/explorer/route/explorer_route.dart';
 import 'package:trackus/features/inbox/inbox.dart';
 import 'package:trackus/features/search/route/search_route.dart';
 import 'package:trackus/features/today/today.dart';
@@ -22,6 +23,21 @@ final GoRouter appRouter = GoRouter(
     ),
     TypedStatefulShellBranch<SearchData>(
       routes: [TypedGoRoute<SearchRouteData>(path: '/search')],
+    ),
+    TypedStatefulShellBranch<ExplorerData>(
+      routes: [
+        TypedGoRoute<ExplorerRouteData>(
+          path: '/explorer',
+          routes: [
+            TypedGoRoute<ExploreProjectRouteData>(
+              path: 'project',
+              routes: [
+                TypedGoRoute<ExploreProjectIdRouteData>(path: ':id'),
+              ],
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 )

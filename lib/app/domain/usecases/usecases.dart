@@ -4,4 +4,6 @@ export 'delete_item.dart';
 export 'delete_item_by_id.dart';
 export 'get_all_items.dart';
 export 'get_all_projects.dart';
+export 'get_items_by_project_id.dart';
+export 'get_project_by_id.dart';
 export 'insert_item.dart';

@@ -75,6 +75,16 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
+  Future<List<Item>> getItemsByProjectId(
+    int projectId, {
+    bool includeDone = true,
+  }) {
+    final query = isar.items.filter().project((q) => q.idEqualTo(0));
+
+    return includeDone ? query.findAll() : query.isDoneEqualTo(false).findAll();
+  }
+
+  @override
   Future<List<Item>> getItemsByQuery(String query) {
     return isar.items
         .filter()
@@ -115,6 +125,11 @@ class ItemRepositoryImpl implements ItemRepository {
   @override
   Future<List<Project>> getAllProjects() {
     return isar.projects.where().findAll();
+  }
+
+  @override
+  Future<Project?> getProjectById(int projectId) {
+    return isar.projects.where().idEqualTo(projectId).findFirst();
   }
 
   @override

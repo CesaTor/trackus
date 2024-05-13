@@ -33,9 +33,16 @@ abstract class ItemRepository {
 
   Future<List<Item>> getInboxItems({required bool includeDone});
 
+  Future<List<Item>> getItemsByProjectId(
+    int projectId, {
+    required bool includeDone,
+  });
+
   Future<List<Item>> getItemsByQuery(String query);
 
   Future<List<Project>> getProjectsByQuery(String query);
+
+  Future<Project?> getProjectById(int id);
 
   Future<List<Item>> getMissedItems();
 }

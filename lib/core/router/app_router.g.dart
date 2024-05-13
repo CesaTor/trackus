@@ -38,6 +38,26 @@ RouteBase get $shellData => StatefulShellRouteData.$route(
             ),
           ],
         ),
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/explorer',
+              factory: $ExplorerRouteDataExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'project',
+                  factory: $ExploreProjectRouteDataExtension._fromState,
+                  routes: [
+                    GoRouteData.$route(
+                      path: ':id',
+                      factory: $ExploreProjectIdRouteDataExtension._fromState,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     );
 
@@ -87,6 +107,62 @@ extension $SearchRouteDataExtension on SearchRouteData {
 
   String get location => GoRouteData.$location(
         '/search',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ExplorerRouteDataExtension on ExplorerRouteData {
+  static ExplorerRouteData _fromState(GoRouterState state) =>
+      const ExplorerRouteData();
+
+  String get location => GoRouteData.$location(
+        '/explorer',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ExploreProjectRouteDataExtension on ExploreProjectRouteData {
+  static ExploreProjectRouteData _fromState(GoRouterState state) =>
+      const ExploreProjectRouteData();
+
+  String get location => GoRouteData.$location(
+        '/explorer/project',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ExploreProjectIdRouteDataExtension on ExploreProjectIdRouteData {
+  static ExploreProjectIdRouteData _fromState(GoRouterState state) =>
+      ExploreProjectIdRouteData(
+        int.parse(state.pathParameters['id']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/explorer/project/${Uri.encodeComponent(id.toString())}',
       );
 
   void go(BuildContext context) => context.go(location);
