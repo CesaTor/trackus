@@ -15,102 +15,17 @@ class SearchPage extends StatelessWidget {
       );
 }
 
-class _SearchView extends StatelessWidget {
-  void _search(BuildContext context, String query) {
-    context.read<SearchBloc>().add(SearchQueryChanged(query));
-  }
-
+class _SearchView extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search'),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: _SearchInput(onChange: (query) => _search(context, query)),
-        ),
-      ),
-      body: BlocBuilder<SearchBloc, SearchState>(
-        builder: (context, state) {
-          final items = state.items;
-          final projects = state.projects;
-
-          switch (state.status) {
-            case SearchStatus.loading:
-              return const Center(child: CircularProgressIndicator());
-            case SearchStatus.error:
-            case SearchStatus.initial:
-            case SearchStatus.loaded:
-              return CustomScrollView(
-                slivers: [
-                  if (items.isNotEmpty) ...[
-                    const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text('Items:'),
-                      ),
-                    ),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final item = items[index];
-                          return TaskItem(
-                            key: ValueKey(item.id),
-                            item: item,
-                            showIfDone: true,
-                          );
-                        },
-                        childCount: items.length,
-                      ),
-                    ),
-                  ],
-                  if (projects.isNotEmpty) ...[
-                    const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text('Projects:'),
-                      ),
-                    ),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final project = projects[index];
-                          return Card(
-                            child: ListTile(
-                              leading: Icon(project.icon),
-                              title: Text(project.name),
-                            ),
-                          );
-                        },
-                        childCount: projects.length,
-                      ),
-                    ),
-                  ],
-                ],
-              );
-          }
-        },
-      ),
-    );
-  }
+  State<_SearchView> createState() => _SearchViewState();
 }
 
-class _SearchInput extends StatefulWidget {
-  const _SearchInput({required this.onChange});
-
-  final void Function(String query) onChange;
-
-  @override
-  State<_SearchInput> createState() => __SearchInputState();
-}
-
-class __SearchInputState extends State<_SearchInput> {
-  late final TextEditingController controller;
+class _SearchViewState extends State<_SearchView> {
+  late TextEditingController controller;
 
   @override
   void initState() {
     controller = TextEditingController();
-    controller.addListener(() => widget.onChange(controller.text));
     super.initState();
   }
 
@@ -120,12 +35,116 @@ class __SearchInputState extends State<_SearchInput> {
     super.dispose();
   }
 
+  void _search(BuildContext context, String query) {
+    context.read<SearchBloc>().add(SearchQueryChanged(query));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final items = context.select((SearchBloc bloc) => bloc.state.items);
+    final projects = context.select((SearchBloc bloc) => bloc.state.projects);
+    final isLoading = context
+        .select((SearchBloc bloc) => bloc.state.status == SearchStatus.loading);
+
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: const Text('Search'),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(48),
+            child: _SearchInput(
+              onChange: (query) => _search(context, query),
+              controller: controller,
+            ),
+          ),
+        ),
+        if (isLoading)
+          const SliverToBoxAdapter(child: LinearProgressIndicator()),
+        ...[
+          if (items.isNotEmpty) ...[
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Text('Items:'),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final item = items[index];
+                  return TaskItem(
+                    key: ValueKey(item.id),
+                    item: item,
+                    showIfDone: true,
+                  );
+                },
+                childCount: items.length,
+              ),
+            ),
+          ],
+          if (projects.isNotEmpty) ...[
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Text('Projects:'),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final project = projects[index];
+                  return Card(
+                    child: ListTile(
+                      leading: Icon(project.icon),
+                      title: Text(project.name),
+                    ),
+                  );
+                },
+                childCount: projects.length,
+              ),
+            ),
+          ],
+        ],
+      ],
+    );
+  }
+}
+
+class _SearchInput extends StatefulWidget {
+  const _SearchInput({
+    required this.onChange,
+    required this.controller,
+  });
+
+  final void Function(String query) onChange;
+  final TextEditingController? controller;
+
+  @override
+  State<_SearchInput> createState() => _SearchInputState();
+}
+
+class _SearchInputState extends State<_SearchInput> {
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    controller = widget.controller ?? TextEditingController();
+    controller.addListener(() => widget.onChange(controller.text));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: IntrinsicWidth(
         child: TextField(
-          controller: controller,
+          controller: widget.controller,
           autofocus: true,
           decoration: const InputDecoration(
             hintText: 'Query',
