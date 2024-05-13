@@ -11,7 +11,8 @@ class ItemListState extends Equatable {
     this.message,
   });
 
-  ItemListState.initial() : this(ItemListStatus.initial, items: [], projects: []);
+  ItemListState.initial()
+      : this(ItemListStatus.initial, items: [], projects: []);
 
   ItemListState loading() => copyWith(status: ItemListStatus.loading);
 

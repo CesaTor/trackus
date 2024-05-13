@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackus/core/extensions/extensions.dart';
-import 'package:trackus/features/explorer/presentation/pages/explorer_add_page.dart';
 import 'package:trackus/features/explorer/route/explorer_route.dart';
 import 'package:trackus/lib.dart';
 
@@ -81,19 +80,13 @@ class _ExplorerPageState extends State<ExplorerPage> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            final res = await showModalBottomSheet<Project>(
-              context: context,
-              builder: (context) {
-                return const ExplorerAddPage();
-              },
-            );
+            final res =
+                await const ExploreAddRouteData().push<Project>(context);
 
             if (res != null && context.mounted) {
               final pId = await InsertProject(context.read()).call(res);
               debugPrint(pId.toString());
             }
-
-            // const ExploreAddRouteData().push<void>(context);
           },
           icon: const Icon(Icons.add),
           label: const Text('Add project'),

@@ -131,6 +131,7 @@ class _ExplorerAddPageState extends State<ExplorerAddPage> {
                   ],
                 ),
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),
