@@ -78,6 +78,24 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
+  Future<List<Item>> getItemsByQuery(String query) {
+    return isar.items
+        .filter()
+        .titleContains(query, caseSensitive: false)
+        .or()
+        .descriptionContains(query, caseSensitive: false)
+        .findAll();
+  }
+
+  @override
+  Future<List<Project>> getProjectsByQuery(String query) {
+    return isar.projects
+        .filter()
+        .nameContains(query, caseSensitive: false)
+        .findAll();
+  }
+
+  @override
   Future<List<Item>> getMissedItems() {
     return isar.items
         .filter()

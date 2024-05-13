@@ -59,7 +59,7 @@ class _ItemAdderOptionsState extends State<ItemAdderOptions> {
                 onChange: (value) => setState(() => priority = value),
               ),
               const SizedBox(width: 8),
-              // TODO: Implement tags
+              // TODO(ct): Implement tags
               // Chip(
               //   label: Row(
               //     children: [

@@ -30,6 +30,14 @@ RouteBase get $shellData => StatefulShellRouteData.$route(
             ),
           ],
         ),
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/search',
+              factory: $SearchRouteDataExtension._fromState,
+            ),
+          ],
+        ),
       ],
     );
 
@@ -61,6 +69,24 @@ extension $InboxRouteDataExtension on InboxRouteData {
 
   String get location => GoRouteData.$location(
         '/inbox',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SearchRouteDataExtension on SearchRouteData {
+  static SearchRouteData _fromState(GoRouterState state) =>
+      const SearchRouteData();
+
+  String get location => GoRouteData.$location(
+        '/search',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -30,10 +30,15 @@ abstract class ItemRepository {
   Future<void> clearProjects();
   // ----- filter methods -----
   Future<List<Item>> getItemsByDate(DateTime date, {bool includeDone = true});
+
   Future<List<Item>> getItemsByProjectName(
     String projectName, {
     bool includeDone = true,
   });
+
+  Future<List<Item>> getItemsByQuery(String query);
+
+  Future<List<Project>> getProjectsByQuery(String query);
 
   Future<List<Item>> getMissedItems();
 }
