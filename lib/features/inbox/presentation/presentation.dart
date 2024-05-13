@@ -1,2 +1,1 @@
-export 'cubit/cubit.dart';
-export 'pages/pages.dart';
+export 'inbox_page.dart';

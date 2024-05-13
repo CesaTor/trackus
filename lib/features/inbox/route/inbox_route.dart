@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trackus/features/inbox/presentation/pages/inbox_page.dart';
+import 'package:trackus/features/inbox/inbox.dart';
 
 // Data
 class InboxData extends StatefulShellBranchData {

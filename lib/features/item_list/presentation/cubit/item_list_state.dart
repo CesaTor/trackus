@@ -1,43 +1,43 @@
 import 'package:equatable/equatable.dart';
 import 'package:trackus/lib.dart';
 
-enum TodayStatus { initial, loading, loaded, error }
+enum ItemListStatus { initial, loading, loaded, error }
 
-class TodayState extends Equatable {
-  const TodayState(
+class ItemListState extends Equatable {
+  const ItemListState(
     this.status, {
     required this.items,
     required this.projects,
     this.message,
   });
 
-  TodayState.initial() : this(TodayStatus.initial, items: [], projects: []);
+  ItemListState.initial() : this(ItemListStatus.initial, items: [], projects: []);
 
-  TodayState loading() => copyWith(status: TodayStatus.loading);
+  ItemListState loading() => copyWith(status: ItemListStatus.loading);
 
-  TodayState loaded(List<Item> items, List<Project> projects) => copyWith(
-        status: TodayStatus.loaded,
+  ItemListState loaded(List<Item> items, List<Project> projects) => copyWith(
+        status: ItemListStatus.loaded,
         items: items,
         projects: projects,
       );
 
-  TodayState error(String message) => copyWith(
-        status: TodayStatus.error,
+  ItemListState error(String message) => copyWith(
+        status: ItemListStatus.error,
         message: message,
       );
 
-  final TodayStatus status;
+  final ItemListStatus status;
   final List<Item> items;
   final List<Project> projects;
   final String? message;
 
-  TodayState copyWith({
-    TodayStatus? status,
+  ItemListState copyWith({
+    ItemListStatus? status,
     List<Item>? items,
     List<Project>? projects,
     String? message,
   }) {
-    return TodayState(
+    return ItemListState(
       status ?? this.status,
       items: items ?? this.items,
       projects: projects ?? this.projects,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trackus/features/today/presentation/pages/today_page.dart';
+import 'package:trackus/features/today/presentation/today_page.dart';
 
 // Data
 class TodayData extends StatefulShellBranchData {

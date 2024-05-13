@@ -31,10 +31,7 @@ abstract class ItemRepository {
   // ----- filter methods -----
   Future<List<Item>> getItemsByDate(DateTime date, {bool includeDone = true});
 
-  Future<List<Item>> getItemsByProjectName(
-    String projectName, {
-    bool includeDone = true,
-  });
+  Future<List<Item>> getInboxItems({required bool includeDone});
 
   Future<List<Item>> getItemsByQuery(String query);
 

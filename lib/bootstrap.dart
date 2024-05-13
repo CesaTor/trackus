@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
@@ -51,19 +49,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   );
 
   // Initialize default project
-  if (await isar.projects.filter().nameEqualTo('Inbox').findFirst() == null) {
-    await isar.writeTxn(() async {
-      await isar.projects.put(
-        Project(
-          name: 'Inbox',
-          colorValue: Colors.grey.value,
-          isFavorite: true,
-        ),
-      );
-    });
-  }
+  await isar.writeTxn(() async {
+    await isar.projects.put(defaultProject);
+  });
 
-  final x = TranslationProvider(child: await builder());
+  final app = TranslationProvider(child: await builder());
 
   runApp(
     MultiRepositoryProvider(
@@ -75,11 +65,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
           create: (context) => isar,
         ),
       ],
-      child: DevicePreview(
-        // ignore: avoid_redundant_argument_values
-        enabled: kDebugMode,
-        builder: (context) => x,
-      ),
+      child: app,
+      // DevicePreview(
+      //   // ignore: avoid_redundant_argument_values
+      //   enabled: kDebugMode,
+      //   builder: (context) => app,
+      // ),
     ),
   );
 }

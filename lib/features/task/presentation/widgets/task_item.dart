@@ -89,22 +89,23 @@ class _TaskItem extends StatelessWidget {
                         future: item.project.load(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState !=
-                                  ConnectionState.done ||
-                              item.project.value == null) {
+                              ConnectionState.done) {
                             return const SizedBox();
                           }
+
+                          final proj = item.project.value ?? defaultProject;
 
                           return Row(
                             children: [
                               Text(
-                                item.project.value!.name,
+                                proj.name,
                                 style: textStyle,
                               ),
                               const SizedBox(width: 8),
                               Icon(
                                 Icons.tag,
                                 size: 16,
-                                color: item.project.value!.colorValue.color,
+                                color: proj.colorValue.color,
                               ),
                             ],
                           );

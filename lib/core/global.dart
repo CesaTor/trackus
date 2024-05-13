@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trackus/core/extensions/extensions.dart';
+import 'package:trackus/lib.dart';
 
 final defaultColor = projectColors.first;
 
@@ -43,3 +44,10 @@ final projectColors = [
 DateTime get today => DateTime.now().end;
 
 DateTime get tomorrow => DateTime.now().add(const Duration(days: 1)).end;
+
+Project defaultProject = Project(
+  id: 0,
+  name: 'Inbox',
+  colorValue: Colors.grey.value,
+  isFavorite: true,
+);

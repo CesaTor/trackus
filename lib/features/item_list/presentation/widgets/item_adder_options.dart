@@ -83,10 +83,6 @@ class _ItemAdderOptionsState extends State<ItemAdderOptions> {
               DropdownButton<Project>(
                 value: project,
                 underline: const SizedBox(),
-                style: const TextStyle(
-                  fontSize: 13,
-                  decoration: TextDecoration.none,
-                ),
                 items: widget.projects
                     .map(
                       (e) => DropdownMenuItem(

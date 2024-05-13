@@ -15,10 +15,7 @@ class _ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: children.elementAt(navigationShell.currentIndex),
-      ),
+      body: children.elementAt(navigationShell.currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.today), label: 'Today'),

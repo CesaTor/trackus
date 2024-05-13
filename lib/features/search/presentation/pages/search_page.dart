@@ -43,69 +43,71 @@ class _SearchViewState extends State<_SearchView> {
   Widget build(BuildContext context) {
     final items = context.select((SearchBloc bloc) => bloc.state.items);
     final projects = context.select((SearchBloc bloc) => bloc.state.projects);
-    final isLoading = context
-        .select((SearchBloc bloc) => bloc.state.status == SearchStatus.loading);
 
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          title: const Text('Search'),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48),
-            child: _SearchInput(
-              onChange: (query) => _search(context, query),
-              controller: controller,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(), // hide keyboard
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: const Text('Search'),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(48),
+                child: _SearchInput(
+                  onChange: (query) => _search(context, query),
+                  controller: controller,
+                ),
+              ),
             ),
-          ),
+            ...[
+              if (items.isNotEmpty) ...[
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text('Items:'),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final item = items[index];
+                      return TaskItem(
+                        key: ValueKey(item.id),
+                        item: item,
+                        showIfDone: true,
+                      );
+                    },
+                    childCount: items.length,
+                  ),
+                ),
+              ],
+              if (projects.isNotEmpty) ...[
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text('Projects:'),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final project = projects[index];
+                      return Card(
+                        child: ListTile(
+                          leading: Icon(project.icon),
+                          title: Text(project.name),
+                        ),
+                      );
+                    },
+                    childCount: projects.length,
+                  ),
+                ),
+              ],
+            ],
+          ],
         ),
-        if (isLoading)
-          const SliverToBoxAdapter(child: LinearProgressIndicator()),
-        ...[
-          if (items.isNotEmpty) ...[
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Text('Items:'),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final item = items[index];
-                  return TaskItem(
-                    key: ValueKey(item.id),
-                    item: item,
-                    showIfDone: true,
-                  );
-                },
-                childCount: items.length,
-              ),
-            ),
-          ],
-          if (projects.isNotEmpty) ...[
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Text('Projects:'),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final project = projects[index];
-                  return Card(
-                    child: ListTile(
-                      leading: Icon(project.icon),
-                      title: Text(project.name),
-                    ),
-                  );
-                },
-                childCount: projects.length,
-              ),
-            ),
-          ],
-        ],
-      ],
+      ),
     );
   }
 }
@@ -147,7 +149,7 @@ class _SearchInputState extends State<_SearchInput> {
           controller: widget.controller,
           autofocus: true,
           decoration: const InputDecoration(
-            hintText: 'Query',
+            hintText: 'title, description or project name...',
             hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             border: InputBorder.none,
           ),

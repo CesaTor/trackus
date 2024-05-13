@@ -67,12 +67,9 @@ class ItemRepositoryImpl implements ItemRepository {
   }
 
   @override
-  Future<List<Item>> getItemsByProjectName(
-    String projectName, {
-    bool includeDone = true,
-  }) {
+  Future<List<Item>> getInboxItems({bool includeDone = true}) {
     final query =
-        isar.items.filter().project((q) => q.nameEqualTo(projectName));
+        isar.items.filter().projectIsNull().or().project((q) => q.idEqualTo(0));
 
     return includeDone ? query.findAll() : query.isDoneEqualTo(false).findAll();
   }
