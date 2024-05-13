@@ -23,7 +23,7 @@ class ExploreProjectPage extends StatelessWidget {
         final proj = snapshot.data ?? defaultProject;
         return ItemListPage(
           title: proj.name,
-          defaultProject: proj,
+          project: proj,
           getItems:
               GetItemsByProjectId(context.read(), projectId, includeDone: true)
                   .call,

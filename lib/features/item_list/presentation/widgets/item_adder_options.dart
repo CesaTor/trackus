@@ -4,6 +4,7 @@ class ItemAdderOptions extends StatefulWidget {
   const ItemAdderOptions({
     required this.onSave,
     required this.projects,
+    this.initialProject,
     this.dafaultDueDate,
     super.key,
   });
@@ -14,6 +15,7 @@ class ItemAdderOptions extends StatefulWidget {
     Priority priority,
   ) onSave;
   final Iterable<Project> projects;
+  final Project? initialProject;
   final DateTime? dafaultDueDate;
 
   @override
@@ -28,7 +30,10 @@ class _ItemAdderOptionsState extends State<ItemAdderOptions> {
 
   @override
   void initState() {
-    project = widget.projects.firstOrNull;
+    project = widget.projects.firstWhereOrNull(
+          (element) => element.id == widget.initialProject?.id,
+        ) ??
+        widget.projects.firstOrNull;
     dueDate = widget.dafaultDueDate;
     priority = Priority.none;
     super.initState();
