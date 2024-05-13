@@ -29,12 +29,8 @@ final GoRouter appRouter = GoRouter(
         TypedGoRoute<ExplorerRouteData>(
           path: '/explorer',
           routes: [
-            TypedGoRoute<ExploreProjectRouteData>(
-              path: 'project',
-              routes: [
-                TypedGoRoute<ExploreProjectIdRouteData>(path: ':id'),
-              ],
-            ),
+            TypedGoRoute<ExploreAddRouteData>(path: 'project/add'),
+            TypedGoRoute<ExploreProjectIdRouteData>(path: 'project/:id'),
           ],
         ),
       ],
