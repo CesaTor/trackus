@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:trackus/lib.dart';
 
 class SettingsBackupPage extends StatelessWidget {
   const SettingsBackupPage({super.key});
@@ -13,15 +14,15 @@ class SettingsBackupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Backup&Restore')),
+      appBar: AppBar(title: Text(i18n.settings.backupAndRestore)),
       body: Column(
         children: <Widget>[
           ListTile(
-            title: const Text('Backup'),
+            title: Text(i18n.settings.backup),
             onTap: () => createBackup(context),
           ),
           ListTile(
-            title: const Text('Restore from backup'),
+            title: Text(i18n.settings.restore),
             onTap: () => restoreBackup(context),
           ),
         ],
@@ -36,9 +37,7 @@ class SettingsBackupPage extends StatelessWidget {
     if (backUpDir == null) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not create backup, please check your storage'),
-        ),
+        SnackBar(content: Text(i18n.settings.error.creation)),
       );
       return;
     }
@@ -56,7 +55,9 @@ class SettingsBackupPage extends StatelessWidget {
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Backup created at $filePath')),
+        SnackBar(
+          content: Text(i18n.settings.message.created(FilePath: filePath)),
+        ),
       );
     }
   }
@@ -78,9 +79,7 @@ class SettingsBackupPage extends StatelessWidget {
       // Restart the app to reload the database
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Backup restored, restart the app to see changes!'),
-          ),
+          SnackBar(content: Text(i18n.settings.message.restored)),
         );
       }
     }

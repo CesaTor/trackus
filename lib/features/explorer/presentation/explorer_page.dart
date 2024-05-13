@@ -42,7 +42,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Explorer'),
+        title: Text(i18n.explorer.main.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -54,10 +54,13 @@ class _ExplorerPageState extends State<ExplorerPage> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Text('Projects:', style: TextStyle(fontSize: 16)),
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  '${i18n.explorer.main.projects}:',
+                  style: const TextStyle(fontSize: 16),
+                ),
               ),
             ),
             SliverList(
@@ -96,7 +99,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
           }
         },
         icon: const Icon(Icons.add),
-        label: const Text('Add project'),
+        label: Text(i18n.explorer.add.cta),
       ),
     );
   }

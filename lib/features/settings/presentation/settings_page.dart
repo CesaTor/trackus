@@ -8,13 +8,13 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(i18n.settings.title)),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           children: [
             ListTile(
-              title: const Text('Backup&Restore'),
+              title: Text(i18n.settings.backupAndRestore),
               onTap: () => const SettingsBackupRouteData().push<void>(context),
             ),
           ],

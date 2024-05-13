@@ -1,0 +1,31 @@
+{
+    "appName": "Trackus",
+    "today": "Oggi",
+    "tomorrow": "Domani",
+    "layout": {
+        "list": "Lista",
+        "calendar": "Calendario",
+        "kanban": "Kanban"
+    },
+    "priority": {
+        "low": "Bassa",
+        "medium": "Media",
+        "high": "Alta",
+        "none": "Nessuna"
+    },
+    "project": {
+        "inbox": "In arrivo"
+    },
+    "navbar": {
+        "today": "Oggi",
+        "inbox": "In arrivo",
+        "search": "Cerca",
+        "explore": "Esplora"
+    },
+    "dueDate": "Scadenza",
+    "allDay": "Tutto il giorno",
+    "form": {
+        "title": "Titolo",
+        "description": "Descrizione"
+    }
+}

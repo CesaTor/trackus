@@ -19,26 +19,26 @@ class _ScaffoldWithNavBar extends StatelessWidget {
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: _onTap,
         selectedIndex: navigationShell.currentIndex,
-        destinations: const <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.today),
-            icon: Icon(Icons.today_outlined),
-            label: 'Today',
+            selectedIcon: const Icon(Icons.today),
+            icon: const Icon(Icons.today_outlined),
+            label: i18n.core.navbar.today,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.inbox),
-            icon: Icon(Icons.inbox_outlined),
-            label: 'Inbox',
+            selectedIcon: const Icon(Icons.inbox),
+            icon: const Icon(Icons.inbox_outlined),
+            label: i18n.core.navbar.inbox,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.search),
-            icon: Icon(Icons.search_outlined),
-            label: 'Search',
+            selectedIcon: const Icon(Icons.search),
+            icon: const Icon(Icons.search_outlined),
+            label: i18n.core.navbar.search,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.menu),
-            icon: Icon(Icons.menu_outlined),
-            label: 'Explore',
+            selectedIcon: const Icon(Icons.menu),
+            icon: const Icon(Icons.menu_outlined),
+            label: i18n.core.navbar.explore,
           ),
         ],
       ),

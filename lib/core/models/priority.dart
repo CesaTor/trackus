@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trackus/lib.dart';
 
 enum Priority {
   low,
@@ -22,13 +23,13 @@ enum Priority {
   String get name {
     switch (this) {
       case Priority.low:
-        return 'Low';
+        return i18n.core.priority.low;
       case Priority.medium:
-        return 'Medium';
+        return i18n.core.priority.medium;
       case Priority.high:
-        return 'High';
+        return i18n.core.priority.high;
       case Priority.none:
-        return 'None';
+        return i18n.core.priority.none;
     }
   }
 }

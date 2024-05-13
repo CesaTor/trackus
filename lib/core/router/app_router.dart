@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trackus/features/explorer/route/explorer_route.dart';
-import 'package:trackus/features/inbox/inbox.dart';
 import 'package:trackus/features/search/route/search_route.dart';
 import 'package:trackus/features/settings/route/settings_route.dart';
-import 'package:trackus/features/today/today.dart';
+import 'package:trackus/lib.dart';
 
 part 'app_router.g.dart';
 part 'scaffold_navbar.dart';

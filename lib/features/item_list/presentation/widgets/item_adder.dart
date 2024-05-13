@@ -83,9 +83,9 @@ class _Title extends StatelessWidget {
       child: TextField(
         controller: controller,
         autofocus: true,
-        decoration: const InputDecoration(
-          hintText: 'Title',
-          hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        decoration: InputDecoration(
+          hintText:  i18n.core.form.title,
+          hintStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           border: InputBorder.none,
         ),
         textInputAction: TextInputAction.newline,
@@ -106,9 +106,9 @@ class _Description extends StatelessWidget {
           controller: controller,
           maxLines: 5,
           minLines: 1,
-          decoration: const InputDecoration(
-            hintText: 'Description',
-            hintStyle: TextStyle(fontSize: 13),
+          decoration:  InputDecoration(
+            hintText: i18n.core.form.description,
+            hintStyle: const TextStyle(fontSize: 13),
             border: InputBorder.none,
           ),
         ),

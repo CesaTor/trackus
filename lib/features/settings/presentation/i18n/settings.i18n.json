@@ -1,0 +1,13 @@
+{
+    "title": "Settings",
+    "backupAndRestore": "Backup&Restore",
+    "backup": "Backup",
+    "restore": "Restore from backup",
+    "message": {
+        "created": "Backup created at $filePath",
+        "restored": "Backup restored, restart the app to see changes!"
+    },
+    "error": {
+        "creation": "Could not create backup, please check your storage permissions"
+    }
+}

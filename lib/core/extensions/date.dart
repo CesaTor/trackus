@@ -10,9 +10,9 @@ extension DateTimeExtension on DateTime {
 
   String get humanString {
     if (isSame(today)) {
-      return 'Today';
+      return i18n.core.today;
     } else if (isSame(tomorrow)) {
-      return 'Tomorrow';
+      return i18n.core.tomorrow;
     }
     return DateFormat('dd MMM').format(this);
   }

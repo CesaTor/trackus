@@ -9,7 +9,7 @@ class InboxPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ItemListPage(
-      title: 'Inbox',
+      title: i18n.core.project.inbox,
       project: defaultProject,
       getItems: GetInboxItems(context.read()).call,
       getProjects: GetAllProjects(context.read()).call,

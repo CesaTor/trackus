@@ -1,0 +1,15 @@
+{
+    "add": {
+        "title": "Crea nuovo progetto",
+        "favorite": "Preferito",
+        "layout": "Layout",
+        "parent": "Progetto principale",
+        "noParent": "Nessun progetto principale",
+        "parentName": "Nome progetto principale",
+        "cta": "Aggiungi progetto"
+    },
+    "main": {
+        "title": "Esplora",
+        "projects": "Progetti"
+    }
+}

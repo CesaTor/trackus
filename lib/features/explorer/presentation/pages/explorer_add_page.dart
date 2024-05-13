@@ -36,7 +36,7 @@ class _ExplorerAddPageState extends State<ExplorerAddPage> {
       onTap: () => FocusScope.of(context).unfocus(), // hide keyboard
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add new project'),
+          title: Text(i18n.explorer.add.title),
           actions: [
             IconButton(
               icon: const Icon(Icons.save),
@@ -71,7 +71,7 @@ class _ExplorerAddPageState extends State<ExplorerAddPage> {
                   contentPadding: EdgeInsets.zero,
                   value: isFavorite,
                   onChanged: (value) => setState(() => isFavorite = value),
-                  title: const Text('Favorite'),
+                  title: Text(i18n.explorer.add.favorite),
                 ),
               ),
               const SizedBox(height: 8),
@@ -80,7 +80,7 @@ class _ExplorerAddPageState extends State<ExplorerAddPage> {
                 icon: Icons.remove_red_eye,
                 child: DropdownButtonFormField<Layout>(
                   decoration: InputDecoration(
-                    labelText: 'Layout',
+                    labelText: i18n.explorer.add.layout,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     border: OutlineInputBorder(borderRadius: roundedBorder),
                   ),
@@ -108,14 +108,14 @@ class _ExplorerAddPageState extends State<ExplorerAddPage> {
                 icon: Icons.menu,
                 child: DropdownButtonFormField<Project?>(
                   decoration: InputDecoration(
-                    labelText: 'Parent project',
+                    labelText: i18n.explorer.add.parent,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     border: OutlineInputBorder(borderRadius: roundedBorder),
                   ),
                   value: parentProject,
                   onChanged: (value) => setState(() => parentProject = value),
                   items: [
-                    const DropdownMenuItem(child: Text('No parent project')),
+                    DropdownMenuItem(child: Text(i18n.explorer.add.noParent)),
                     ...projects.map(
                       (e) => DropdownMenuItem(
                         value: e,
@@ -188,7 +188,7 @@ class _ProjectName extends StatelessWidget {
             child: TextField(
               onChanged: onNameChange,
               decoration: InputDecoration(
-                labelText: 'Parent Name',
+                labelText: i18n.explorer.add.parentName,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 border: OutlineInputBorder(borderRadius: roundedBorder),
               ),

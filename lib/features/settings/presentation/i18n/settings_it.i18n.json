@@ -1,0 +1,13 @@
+{
+    "title": "Impostazioni",
+    "backupAndRestore": "Backup&Ripristino",
+    "backup": "Backup",
+    "restore": "Ripristina da file",
+    "message": {
+        "created": "Backup creato: $filePath",
+        "restored": "Backup ripristinato, riavvia l'app per vedere i cambiamenti!"
+    },
+    "error": {
+        "creation": "Impossibile creare il backup, prova a controllare i permessi!"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "add": {
+        "title": "Add new project",
+        "favorite": "Favorite",
+        "layout": "Layout",
+        "parent": "Parent project",
+        "noParent": "No parent project",
+        "parentName": "Parent name",
+        "cta": "Add project"
+    },
+    "main": {
+        "title": "Explorer",
+        "projects": "Projects"
+    }
+}

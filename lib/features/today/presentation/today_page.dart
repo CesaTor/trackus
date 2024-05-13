@@ -9,7 +9,7 @@ class TodayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ItemListPage(
-      title: 'Today',
+      title: i18n.core.today,
       dueDate: today,
       getItems: GetTodayItems(context.read()).call,
       getProjects: GetAllProjects(context.read()).call,

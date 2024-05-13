@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trackus/lib.dart';
 
 enum Layout {
   list,
@@ -8,11 +9,11 @@ enum Layout {
   String get name {
     switch (this) {
       case Layout.list:
-        return 'List';
+        return i18n.core.layout.list;
       case Layout.kanban:
-        return 'Kanban';
+        return i18n.core.layout.kanban;
       case Layout.calendar:
-        return 'Calendar';
+        return i18n.core.layout.calendar;
     }
   }
 

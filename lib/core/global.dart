@@ -47,7 +47,7 @@ DateTime get tomorrow => DateTime.now().add(const Duration(days: 1)).end;
 
 Project defaultProject = Project(
   id: 0,
-  name: 'Inbox',
+  name: i18n.core.project.inbox,
   colorValue: Colors.grey.value,
   isFavorite: true,
 );

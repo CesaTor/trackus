@@ -165,7 +165,7 @@ class _ItemDatePicker extends StatelessWidget {
             const Icon(Icons.calendar_today, size: 15),
             const SizedBox(width: 8),
             Text(
-              currentDate?.humanString ?? 'Due Date',
+              currentDate?.humanString ?? i18n.core.dueDate,
               style: const TextStyle(fontSize: 13),
             ),
           ],
@@ -211,7 +211,7 @@ class _ItemTimePicker extends StatelessWidget {
   }
 
   String shortTime(TimeOfDay? tod) {
-    if (tod == null) return 'All day';
+    if (tod == null) return i18n.core.allDay;
     return '${tod.hour}:${tod.minute < 10 ? '0' : ''}${tod.minute}';
   }
 }

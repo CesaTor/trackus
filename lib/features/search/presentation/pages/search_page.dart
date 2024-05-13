@@ -51,7 +51,7 @@ class _SearchViewState extends State<_SearchView> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: const Text('Search'),
+              title: Text(i18n.search.title),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(48),
                 child: _SearchInput(
@@ -62,10 +62,10 @@ class _SearchViewState extends State<_SearchView> {
             ),
             ...[
               if (items.isNotEmpty) ...[
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text('Items:'),
+                    padding: const EdgeInsets.all(8),
+                    child: Text('${i18n.search.items}:'),
                   ),
                 ),
                 SliverList(
@@ -83,10 +83,10 @@ class _SearchViewState extends State<_SearchView> {
                 ),
               ],
               if (projects.isNotEmpty) ...[
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text('Projects:'),
+                    padding: const EdgeInsets.all(8),
+                    child: Text('${i18n.search.projects}:'),
                   ),
                 ),
                 SliverList(
@@ -148,9 +148,12 @@ class _SearchInputState extends State<_SearchInput> {
         child: TextField(
           controller: widget.controller,
           autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'title, description or project name...',
-            hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          decoration: InputDecoration(
+            hintText: i18n.search.hint,
+            hintStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
             border: InputBorder.none,
           ),
           textInputAction: TextInputAction.newline,
