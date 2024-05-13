@@ -7,3 +7,6 @@ export 'get_all_projects.dart';
 export 'get_items_by_project_id.dart';
 export 'get_project_by_id.dart';
 export 'insert_item.dart';
+export 'insert_project.dart';
+export 'watch_all_items.dart';
+export 'watch_all_projects.dart';

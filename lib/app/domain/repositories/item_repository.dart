@@ -5,7 +5,11 @@ abstract class ItemRepository {
 
   Future<List<Item>> getAllItems();
 
+  Stream<List<Item>> watchAllItems();
+
   Future<List<Project>> getAllProjects();
+
+  Stream<List<Project>> watchAllProjects();
 
   Future<int> insertItem(Item item);
 
