@@ -58,7 +58,7 @@ class _TaskItem extends StatelessWidget {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (item.description != null)
+                  if (item.description != null && item.description!.isNotEmpty)
                     Text(
                       item.description!,
                       overflow: TextOverflow.ellipsis,

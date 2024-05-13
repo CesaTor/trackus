@@ -9,6 +9,7 @@ environment:
 dependencies:
   bloc: ^8.1.3
   collection: ^1.18.0
+  device_preview: ^1.1.0  # testing
   enough_icalendar: ^0.15.0
   equatable: ^2.0.5
   flutter:

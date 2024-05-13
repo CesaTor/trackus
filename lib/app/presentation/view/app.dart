@@ -18,7 +18,6 @@ class App extends StatelessWidget {
       child: MaterialApp.router(
         theme: lightTheme,
         darkTheme: darkTheme,
-        themeMode: ThemeMode.dark,
         locale: TranslationProvider.of(context).flutterLocale,
         supportedLocales: AppLocaleUtils.supportedLocales,
         localizationsDelegates: GlobalMaterialLocalizations.delegates,

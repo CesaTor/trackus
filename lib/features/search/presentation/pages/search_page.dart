@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trackus/features/search/domain/usecases/search.dart';
 import 'package:trackus/features/search/presentation/bloc/search_bloc.dart';
 import 'package:trackus/features/task/presentation/widgets/task_item.dart';
+import 'package:trackus/lib.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -25,7 +26,7 @@ class _SearchView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Search'),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(30),
+          preferredSize: const Size.fromHeight(48),
           child: _SearchInput(onChange: (query) => _search(context, query)),
         ),
       ),
@@ -42,40 +43,49 @@ class _SearchView extends StatelessWidget {
             case SearchStatus.loaded:
               return CustomScrollView(
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text('Projects: (${projects.length})'),
+                  if (items.isNotEmpty) ...[
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Text('Items:'),
+                      ),
                     ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final project = projects[index];
-                        return ListTile(title: Text(project.name));
-                      },
-                      childCount: projects.length,
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final item = items[index];
+                          return TaskItem(
+                            key: ValueKey(item.id),
+                            item: item,
+                            showIfDone: true,
+                          );
+                        },
+                        childCount: items.length,
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text('Items: (${projects.length})'),
+                  ],
+                  if (projects.isNotEmpty) ...[
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Text('Projects:'),
+                      ),
                     ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final item = items[index];
-                        return TaskItem(
-                          key: ValueKey(item.id),
-                          item: item,
-                          showIfDone: true,
-                        );
-                      },
-                      childCount: items.length,
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final project = projects[index];
+                          return Card(
+                            child: ListTile(
+                              leading: Icon(project.icon),
+                              title: Text(project.name),
+                            ),
+                          );
+                        },
+                        childCount: projects.length,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               );
           }
