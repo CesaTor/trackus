@@ -59,5 +59,5 @@ class Project extends Equatable {
 }
 
 extension ProjectExtension on Project {
-  IconData get icon => name == 'Inbox' ? Icons.inbox_outlined : Icons.folder;
+  IconData get icon => name == 'Inbox' ? Icons.inbox_outlined : Icons.tag;
 }

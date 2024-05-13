@@ -45,14 +45,12 @@ RouteBase get $shellData => StatefulShellRouteData.$route(
               factory: $ExplorerRouteDataExtension._fromState,
               routes: [
                 GoRouteData.$route(
-                  path: 'project',
-                  factory: $ExploreProjectRouteDataExtension._fromState,
-                  routes: [
-                    GoRouteData.$route(
-                      path: ':id',
-                      factory: $ExploreProjectIdRouteDataExtension._fromState,
-                    ),
-                  ],
+                  path: 'project/add',
+                  factory: $ExploreAddRouteDataExtension._fromState,
+                ),
+                GoRouteData.$route(
+                  path: 'project/:id',
+                  factory: $ExploreProjectIdRouteDataExtension._fromState,
                 ),
               ],
             ),
@@ -137,12 +135,12 @@ extension $ExplorerRouteDataExtension on ExplorerRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $ExploreProjectRouteDataExtension on ExploreProjectRouteData {
-  static ExploreProjectRouteData _fromState(GoRouterState state) =>
-      const ExploreProjectRouteData();
+extension $ExploreAddRouteDataExtension on ExploreAddRouteData {
+  static ExploreAddRouteData _fromState(GoRouterState state) =>
+      const ExploreAddRouteData();
 
   String get location => GoRouteData.$location(
-        '/explorer/project',
+        '/explorer/project/add',
       );
 
   void go(BuildContext context) => context.go(location);

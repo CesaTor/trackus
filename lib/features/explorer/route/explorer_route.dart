@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trackus/features/explorer/explorer.dart';
-import 'package:trackus/lib.dart';
 
 // Data
 class ExplorerData extends StatefulShellBranchData {
@@ -20,17 +17,6 @@ class ExplorerRouteData extends GoRouteData {
   }
 }
 
-class ExploreProjectRouteData extends GoRouteData {
-  const ExploreProjectRouteData();
-
-  @override
-  FutureOr<String?> redirect(BuildContext context, GoRouterState state) {
-    final id = int.tryParse(state.pathParameters['id'] ?? '0') ?? 0;
-
-    return ExploreProjectIdRouteData(id).location;
-  }
-}
-
 class ExploreProjectIdRouteData extends GoRouteData {
   const ExploreProjectIdRouteData(this.id);
 
@@ -42,5 +28,14 @@ class ExploreProjectIdRouteData extends GoRouteData {
       projectId: id,
       key: state.pageKey,
     );
+  }
+}
+
+class ExploreAddRouteData extends GoRouteData {
+  const ExploreAddRouteData();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ExplorerAddPage(key: state.pageKey);
   }
 }

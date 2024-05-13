@@ -8,7 +8,10 @@ import 'package:trackus/features/today/today.dart';
 part 'app_router.g.dart';
 part 'scaffold_navbar.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final GoRouter appRouter = GoRouter(
+  navigatorKey: rootNavigatorKey,
   routes: $appRoutes,
   initialLocation: '/today',
 );
@@ -29,12 +32,8 @@ final GoRouter appRouter = GoRouter(
         TypedGoRoute<ExplorerRouteData>(
           path: '/explorer',
           routes: [
-            TypedGoRoute<ExploreProjectRouteData>(
-              path: 'project',
-              routes: [
-                TypedGoRoute<ExploreProjectIdRouteData>(path: ':id'),
-              ],
-            ),
+            TypedGoRoute<ExploreAddRouteData>(path: 'project/add'),
+            TypedGoRoute<ExploreProjectIdRouteData>(path: 'project/:id'),
           ],
         ),
       ],

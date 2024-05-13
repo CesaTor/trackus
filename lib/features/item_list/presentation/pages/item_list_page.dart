@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackus/core/extensions/extensions.dart';
 import 'package:trackus/features/item_list/item_list.dart';
 import 'package:trackus/features/task/presentation/widgets/task_item.dart';
 import 'package:trackus/lib.dart';
@@ -12,14 +13,14 @@ class ItemListPage extends StatelessWidget {
     required this.getItems,
     required this.getProjects,
     required this.insertItem,
-    this.defaultProject, // TODO: use
-    this.defaultDueDate,
+    this.project,
+    this.dueDate,
     super.key,
   });
 
   final String title;
-  final DateTime? defaultDueDate;
-  final Project? defaultProject;
+  final DateTime? dueDate;
+  final Project? project;
   final FutureOr<List<Item>> Function() getItems;
   final FutureOr<List<Project>> Function() getProjects;
   final Future<void> Function(Item) insertItem;
@@ -34,7 +35,8 @@ class ItemListPage extends StatelessWidget {
       )..init(),
       child: _ItemListView(
         title: title,
-        defaultDueDate: defaultDueDate,
+        project: project,
+        defaultDueDate: dueDate,
       ),
     );
   }
@@ -43,10 +45,12 @@ class ItemListPage extends StatelessWidget {
 class _ItemListView extends StatelessWidget {
   const _ItemListView({
     required this.title,
+    required this.project,
     required this.defaultDueDate,
   });
 
   final String title;
+  final Project? project;
   final DateTime? defaultDueDate;
 
   void updateState(BuildContext context) {
@@ -63,7 +67,12 @@ class _ItemListView extends StatelessWidget {
         context.select((ItemListCubit cubit) => cubit.state.projects);
 
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        title: Text(
+          title,
+          style: TextStyle(color: project?.colorValue.color),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: BlocBuilder<ItemListCubit, ItemListState>(
@@ -84,6 +93,7 @@ class _ItemListView extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: project?.colorValue.color,
         onPressed: () async {
           final currContext = context;
           if (context.mounted) {
@@ -91,6 +101,7 @@ class _ItemListView extends StatelessWidget {
               context: context,
               builder: (context) => ItemAdder(
                 projects: projects,
+                initialProject: project,
                 defaultDueDate: defaultDueDate,
                 onAdd: (item) => addItem(currContext, item),
               ),

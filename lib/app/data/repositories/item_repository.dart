@@ -79,7 +79,7 @@ class ItemRepositoryImpl implements ItemRepository {
     int projectId, {
     bool includeDone = true,
   }) {
-    final query = isar.items.filter().project((q) => q.idEqualTo(0));
+    final query = isar.items.filter().project((q) => q.idEqualTo(projectId));
 
     return includeDone ? query.findAll() : query.isDoneEqualTo(false).findAll();
   }
@@ -141,4 +141,12 @@ class ItemRepositoryImpl implements ItemRepository {
   Future<int> updateProject(Project project) {
     return insertProject(project);
   }
+
+  /// Stream methods
+
+  @override
+  Stream<List<Item>> watchAllItems() => isar.items.where().watch();
+
+  @override
+  Stream<List<Project>> watchAllProjects() => isar.projects.where().watch();
 }

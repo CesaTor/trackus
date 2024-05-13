@@ -26,7 +26,7 @@ class _ScaffoldWithNavBar extends StatelessWidget {
             label: 'Today',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.today),
+            selectedIcon: Icon(Icons.inbox),
             icon: Icon(Icons.inbox_outlined),
             label: 'Inbox',
           ),

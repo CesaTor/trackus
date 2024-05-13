@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:trackus/core/extensions/extensions.dart';
 import 'package:trackus/lib.dart';
@@ -8,11 +9,13 @@ class ItemAdder extends StatefulWidget {
   const ItemAdder({
     required this.projects,
     required this.onAdd,
+    this.initialProject,
     this.defaultDueDate,
     super.key,
   });
 
   final DateTime? defaultDueDate;
+  final Project? initialProject;
   final Iterable<Project> projects;
   final void Function(Item item) onAdd;
 
@@ -47,6 +50,7 @@ class _ItemAdderState extends State<ItemAdder> {
         _Description(descriptionController),
         ItemAdderOptions(
           projects: widget.projects,
+          initialProject: widget.initialProject,
           dafaultDueDate: widget.defaultDueDate,
           onSave: (project, dueDate, priority) {
             final item = Item(

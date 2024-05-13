@@ -10,7 +10,7 @@ class TodayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ItemListPage(
       title: 'Today',
-      defaultDueDate: today,
+      dueDate: today,
       getItems: GetTodayItems(context.read()).call,
       getProjects: GetAllProjects(context.read()).call,
       insertItem: InsertItem(context.read()).call,
