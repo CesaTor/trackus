@@ -41,36 +41,22 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // Initialize Database
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [
-      ItemSchema,
-      ProjectSchema,
-    ],
+    [ItemSchema, ProjectSchema],
     directory: dir.path,
   );
 
   // Initialize default project
-  await isar.writeTxn(() async {
-    await isar.projects.put(defaultProject);
-  });
-
-  final app = TranslationProvider(child: await builder());
+  await isar.writeTxn(() => isar.projects.put(defaultProject));
 
   runApp(
     MultiRepositoryProvider(
       providers: [
         RepositoryProvider<ItemRepository>(
-          create: (context) => ItemRepositoryImpl(isar),
+          create: (_) => ItemRepositoryImpl(isar),
         ),
-        RepositoryProvider<Isar>(
-          create: (context) => isar,
-        ),
+        RepositoryProvider<Isar>(create: (_) => isar),
       ],
-      child: app,
-      // DevicePreview(
-      //   // ignore: avoid_redundant_argument_values
-      //   enabled: kDebugMode,
-      //   builder: (context) => app,
-      // ),
+      child: TranslationProvider(child: await builder()),
     ),
   );
 }

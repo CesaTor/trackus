@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:trackus/features/explorer/route/explorer_route.dart';
 import 'package:trackus/features/inbox/inbox.dart';
 import 'package:trackus/features/search/route/search_route.dart';
+import 'package:trackus/features/settings/route/settings_route.dart';
 import 'package:trackus/features/today/today.dart';
 
 part 'app_router.g.dart';
@@ -35,6 +36,10 @@ final GoRouter appRouter = GoRouter(
             TypedGoRoute<ExploreAddRouteData>(path: 'project/add'),
             TypedGoRoute<ExploreProjectIdRouteData>(path: 'project/:id'),
           ],
+        ),
+        TypedGoRoute<SettingsRouteData>(
+          path: '/settings',
+          routes: [TypedGoRoute<SettingsBackupRouteData>(path: 'backup')],
         ),
       ],
     ),

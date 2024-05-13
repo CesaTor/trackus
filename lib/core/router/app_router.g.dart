@@ -54,6 +54,16 @@ RouteBase get $shellData => StatefulShellRouteData.$route(
                 ),
               ],
             ),
+            GoRouteData.$route(
+              path: '/settings',
+              factory: $SettingsRouteDataExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'backup',
+                  factory: $SettingsBackupRouteDataExtension._fromState,
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -161,6 +171,42 @@ extension $ExploreProjectIdRouteDataExtension on ExploreProjectIdRouteData {
 
   String get location => GoRouteData.$location(
         '/explorer/project/${Uri.encodeComponent(id.toString())}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SettingsRouteDataExtension on SettingsRouteData {
+  static SettingsRouteData _fromState(GoRouterState state) =>
+      const SettingsRouteData();
+
+  String get location => GoRouteData.$location(
+        '/settings',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SettingsBackupRouteDataExtension on SettingsBackupRouteData {
+  static SettingsBackupRouteData _fromState(GoRouterState state) =>
+      const SettingsBackupRouteData();
+
+  String get location => GoRouteData.$location(
+        '/settings/backup',
       );
 
   void go(BuildContext context) => context.go(location);
