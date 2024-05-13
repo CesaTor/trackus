@@ -4,15 +4,17 @@ class ItemAdderOptions extends StatefulWidget {
   const ItemAdderOptions({
     required this.onSave,
     required this.projects,
+    this.dafaultDueDate,
     super.key,
   });
 
   final void Function(
     Project? project,
-    DateTime dueDate,
+    DateTime? dueDate,
     Priority priority,
   ) onSave;
   final Iterable<Project> projects;
+  final DateTime? dafaultDueDate;
 
   @override
   State<ItemAdderOptions> createState() => _ItemAdderOptionsState();
@@ -20,14 +22,14 @@ class ItemAdderOptions extends StatefulWidget {
 
 class _ItemAdderOptionsState extends State<ItemAdderOptions> {
   Project? project;
-  late DateTime dueDate;
+  DateTime? dueDate;
   TimeOfDay? dueTime;
   late Priority priority;
 
   @override
   void initState() {
     project = widget.projects.firstOrNull;
-    dueDate = DateTime.now().end;
+    dueDate = widget.dafaultDueDate;
     priority = Priority.none;
     super.initState();
   }
@@ -109,7 +111,7 @@ class _ItemAdderOptionsState extends State<ItemAdderOptions> {
                 onPressed: () {
                   var date = dueDate;
                   if (dueTime != null) {
-                    date = date.copyWith(
+                    date = date?.copyWith(
                       hour: dueTime!.hour,
                       minute: dueTime!.minute,
                     );
@@ -137,7 +139,7 @@ class _ItemDatePicker extends StatelessWidget {
     required this.onChange,
   });
 
-  final DateTime currentDate;
+  final DateTime? currentDate;
   final void Function(DateTime value) onChange;
 
   @override
@@ -162,7 +164,7 @@ class _ItemDatePicker extends StatelessWidget {
             const Icon(Icons.calendar_today, size: 15),
             const SizedBox(width: 8),
             Text(
-              currentDate.humanString,
+              currentDate?.humanString ?? 'Due Date',
               style: const TextStyle(fontSize: 13),
             ),
           ],

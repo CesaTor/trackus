@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackus/core/extensions/extensions.dart';
 import 'package:trackus/features/task/presentation/widgets/task_item.dart';
 import 'package:trackus/lib.dart';
 
@@ -60,6 +61,7 @@ class _TodayView extends StatelessWidget {
               context: context,
               builder: (context) => ItemAdder(
                 projects: projects,
+                defaultDueDate: DateTime.now().end,
                 onAdd: (item) => addItem(currContext, item),
               ),
               shape: const BeveledRectangleBorder(),

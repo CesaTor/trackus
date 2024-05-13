@@ -8,9 +8,11 @@ class ItemAdder extends StatefulWidget {
   const ItemAdder({
     required this.projects,
     required this.onAdd,
+    this.defaultDueDate,
     super.key,
   });
 
+  final DateTime? defaultDueDate;
   final Iterable<Project> projects;
   final void Function(Item item) onAdd;
 
@@ -45,6 +47,7 @@ class _ItemAdderState extends State<ItemAdder> {
         _Description(descriptionController),
         ItemAdderOptions(
           projects: widget.projects,
+          dafaultDueDate: widget.defaultDueDate,
           onSave: (project, dueDate, priority) {
             final item = Item(
               title: titleController.text,
