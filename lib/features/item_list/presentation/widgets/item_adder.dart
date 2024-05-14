@@ -84,7 +84,7 @@ class _Title extends StatelessWidget {
         controller: controller,
         autofocus: true,
         decoration: InputDecoration(
-          hintText:  i18n.core.form.title,
+          hintText: i18n.core.form.title,
           hintStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           border: InputBorder.none,
         ),
@@ -106,7 +106,7 @@ class _Description extends StatelessWidget {
           controller: controller,
           maxLines: 5,
           minLines: 1,
-          decoration:  InputDecoration(
+          decoration: InputDecoration(
             hintText: i18n.core.form.description,
             hintStyle: const TextStyle(fontSize: 13),
             border: InputBorder.none,

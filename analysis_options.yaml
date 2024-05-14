@@ -4,5 +4,6 @@ linter:
     public_member_api_docs: false
 
 analyzer:
+  exclude: [build/**, lib/**.g.dart]
   errors:
     cascade_invocations: ignore
