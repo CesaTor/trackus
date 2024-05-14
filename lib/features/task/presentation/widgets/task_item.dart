@@ -44,72 +44,86 @@ class _TaskItem extends StatelessWidget {
 
         return Visibility(
           visible: !(item.isDone && !showIfDone),
-          child: CheckboxListTile(
-            side: BorderSide(color: item.priority.color),
-            value: item.isDone,
-            activeColor: item.priority.color,
-            onChanged: (_) {
-              context.read<TaskBloc>().add(const TaskToggle());
+          child: GestureDetector(
+            onLongPress: () async {
+              final projects = await GetAllProjects(context.read()).call();
+              if (context.mounted) {
+                await ItemAdder(
+                  projects: projects,
+                  initialProject: item.project.value ?? defaultProject,
+                  defaultDueDate: item.dueDate,
+                  onAdd: (item) async => InsertItem(context.read()).call(item),
+                ).show(context);
+              }
             },
-            title: Text(item.title, style: textStyle),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (item.description != null && item.description!.isNotEmpty)
-                  Text(
-                    item.description!,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyle,
-                    maxLines: 1,
-                  ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (item.dueDate != null)
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.today,
-                            size: 16,
-                            color: item.priority.color,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            item.dueDate!.humanString,
-                            style: textStyle,
-                          ),
-                        ],
-                      )
-                    else
-                      const SizedBox(),
-                    FutureBuilder(
-                      future: item.project.load(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState != ConnectionState.done) {
-                          return const SizedBox();
-                        }
-
-                        final proj = item.project.value ?? defaultProject;
-
-                        return Row(
+            child: CheckboxListTile(
+              side: BorderSide(color: item.priority.color),
+              value: item.isDone,
+              activeColor: item.priority.color,
+              onChanged: (_) {
+                context.read<TaskBloc>().add(const TaskToggle());
+              },
+              title: Text(item.title, style: textStyle),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (item.description != null && item.description!.isNotEmpty)
+                    Text(
+                      item.description!,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyle,
+                      maxLines: 1,
+                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (item.dueDate != null)
+                        Row(
                           children: [
+                            Icon(
+                              Icons.today,
+                              size: 16,
+                              color: item.priority.color,
+                            ),
+                            const SizedBox(width: 4),
                             Text(
-                              proj.name,
+                              item.dueDate!.humanString,
                               style: textStyle,
                             ),
-                            const SizedBox(width: 8),
-                            Icon(
-                              Icons.tag,
-                              size: 16,
-                              color: proj.colorValue.color,
-                            ),
                           ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                        )
+                      else
+                        const SizedBox(),
+                      FutureBuilder(
+                        future: item.project.load(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return const SizedBox();
+                          }
+
+                          final proj = item.project.value ?? defaultProject;
+
+                          return Row(
+                            children: [
+                              Text(
+                                proj.name,
+                                style: textStyle,
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(
+                                Icons.tag,
+                                size: 16,
+                                color: proj.colorValue.color,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

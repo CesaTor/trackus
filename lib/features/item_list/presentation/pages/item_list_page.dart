@@ -100,20 +100,13 @@ class _ItemListView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: project?.colorValue.color,
-        onPressed: () async {
-          final currContext = context;
-          if (context.mounted) {
-            await showModalBottomSheet<void>(
-              context: context,
-              builder: (context) => ItemAdder(
-                projects: projects,
-                initialProject: project,
-                defaultDueDate: defaultDueDate,
-                onAdd: (item) => addItem(currContext, item),
-              ),
-              shape: const BeveledRectangleBorder(),
-            );
-          }
+        onPressed: () {
+          ItemAdder(
+            projects: projects,
+            initialProject: project,
+            defaultDueDate: defaultDueDate,
+            onAdd: (item) => addItem(context, item),
+          ).show(context);
         },
         child: const Icon(Icons.add),
       ),

@@ -14,6 +14,14 @@ class ItemAdder extends StatefulWidget {
     super.key,
   });
 
+  Future<void> show(BuildContext context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (context) => this,
+      shape: const BeveledRectangleBorder(),
+    );
+  }
+
   final DateTime? defaultDueDate;
   final Project? initialProject;
   final Iterable<Project> projects;
