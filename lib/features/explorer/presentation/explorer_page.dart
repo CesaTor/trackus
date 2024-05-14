@@ -18,16 +18,22 @@ class _ExplorerPageState extends State<ExplorerPage> {
   late List<Project> projects;
   late StreamSubscription<List<Project>> streamSubscription;
 
+  List<Project> removeInbox(List<Project> projects) {
+    return projects
+        .where((element) => element.id != defaultProject.id)
+        .toList();
+  }
+
   @override
   void initState() {
     projects = [];
     GetAllProjects(context.read())
         .call()
-        .then((value) => setState(() => projects = value));
+        .then((value) => setState(() => projects = removeInbox(value)));
 
     streamSubscription = WatchAllProjects(context.read())
         .call()
-        .listen((event) => setState(() => projects = event));
+        .listen((event) => setState(() => projects = removeInbox(event)));
 
     super.initState();
   }
@@ -58,7 +64,9 @@ class _ExplorerPageState extends State<ExplorerPage> {
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
-                  '${i18n.explorer.main.projects}:',
+                  projects.isEmpty
+                      ? i18n.explorer.main.noProjects
+                      : '${i18n.explorer.main.projects}:',
                   style: const TextStyle(fontSize: 16),
                 ),
               ),

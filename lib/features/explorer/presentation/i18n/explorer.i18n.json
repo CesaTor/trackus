@@ -10,6 +10,16 @@
     },
     "main": {
         "title": "Explorer",
-        "projects": "Projects"
+        "projects": "Projects",
+        "noProjects": "No projects yet, add one!"
+    },
+    "modal": {
+        "delete": {
+            "project": {
+                "title": "Delete project",
+                "content": "Are you sure you want to delete $projectName?",
+                "cta": "Delete"
+            }
+        }
     }
 }

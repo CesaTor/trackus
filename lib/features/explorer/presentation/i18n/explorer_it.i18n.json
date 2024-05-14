@@ -10,6 +10,16 @@
     },
     "main": {
         "title": "Esplora",
-        "projects": "Progetti"
+        "projects": "Progetti",
+        "noProjects": "Ancora nessun progetto, aggiungine uno!"
+    },
+    "modal": {
+        "delete": {
+            "project": {
+                "title": "Elimina progetto",
+                "content": "Sei sicuro di voler eliminare $projectName?",
+                "cta": "Elimina"
+            }
+        }
     }
 }

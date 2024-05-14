@@ -27,5 +27,8 @@
     "form": {
         "title": "Title",
         "description": "Description"
-    }
+    },
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "save": "Save"
 }

@@ -15,6 +15,7 @@ class ItemListPage extends StatelessWidget {
     required this.insertItem,
     this.project,
     this.dueDate,
+    this.actions,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class ItemListPage extends StatelessWidget {
   final FutureOr<List<Item>> Function() getItems;
   final FutureOr<List<Project>> Function() getProjects;
   final Future<void> Function(Item) insertItem;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class ItemListPage extends StatelessWidget {
         title: title,
         project: project,
         defaultDueDate: dueDate,
+        actions: actions,
       ),
     );
   }
@@ -47,11 +50,13 @@ class _ItemListView extends StatelessWidget {
     required this.title,
     required this.project,
     required this.defaultDueDate,
+    this.actions,
   });
 
   final String title;
   final Project? project;
   final DateTime? defaultDueDate;
+  final List<Widget>? actions;
 
   void updateState(BuildContext context) {
     context.read<ItemListCubit>().init();
@@ -72,6 +77,7 @@ class _ItemListView extends StatelessWidget {
           title,
           style: TextStyle(color: project?.colorValue.color),
         ),
+        actions: actions,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),

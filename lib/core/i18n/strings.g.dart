@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 78 (39 per locale)
+/// Strings: 92 (46 per locale)
 ///
-/// Built on 2024-05-13 at 23:03 UTC
+/// Built on 2024-05-14 at 09:32 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -164,6 +164,9 @@ class _StringsCoreEn {
 	String get dueDate => 'Due Date';
 	String get allDay => 'All Day';
 	late final _StringsCoreFormEn form = _StringsCoreFormEn._(_root);
+	String get cancel => 'Cancel';
+	String get delete => 'Delete';
+	String get save => 'Save';
 }
 
 // Path: settings
@@ -190,6 +193,7 @@ class _StringsExplorerEn {
 	// Translations
 	late final _StringsExplorerAddEn add = _StringsExplorerAddEn._(_root);
 	late final _StringsExplorerMainEn main = _StringsExplorerMainEn._(_root);
+	late final _StringsExplorerModalEn modal = _StringsExplorerModalEn._(_root);
 }
 
 // Path: search
@@ -310,6 +314,39 @@ class _StringsExplorerMainEn {
 	// Translations
 	String get title => 'Explorer';
 	String get projects => 'Projects';
+	String get noProjects => 'No projects yet, add one!';
+}
+
+// Path: explorer.modal
+class _StringsExplorerModalEn {
+	_StringsExplorerModalEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _StringsExplorerModalDeleteEn delete = _StringsExplorerModalDeleteEn._(_root);
+}
+
+// Path: explorer.modal.delete
+class _StringsExplorerModalDeleteEn {
+	_StringsExplorerModalDeleteEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final _StringsExplorerModalDeleteProjectEn project = _StringsExplorerModalDeleteProjectEn._(_root);
+}
+
+// Path: explorer.modal.delete.project
+class _StringsExplorerModalDeleteProjectEn {
+	_StringsExplorerModalDeleteProjectEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Delete project';
+	String content({required Object ProjectName}) => 'Are you sure you want to delete ${ProjectName}?';
+	String get cta => 'Delete';
 }
 
 // Path: <root>
@@ -355,6 +392,9 @@ class _StringsCoreIt extends _StringsCoreEn {
 	@override String get dueDate => 'Scadenza';
 	@override String get allDay => 'Tutto il giorno';
 	@override late final _StringsCoreFormIt form = _StringsCoreFormIt._(_root);
+	@override String get cancel => 'Annulla';
+	@override String get delete => 'Elimina';
+	@override String get save => 'Salva';
 }
 
 // Path: settings
@@ -381,6 +421,7 @@ class _StringsExplorerIt extends _StringsExplorerEn {
 	// Translations
 	@override late final _StringsExplorerAddIt add = _StringsExplorerAddIt._(_root);
 	@override late final _StringsExplorerMainIt main = _StringsExplorerMainIt._(_root);
+	@override late final _StringsExplorerModalIt modal = _StringsExplorerModalIt._(_root);
 }
 
 // Path: search
@@ -501,4 +542,37 @@ class _StringsExplorerMainIt extends _StringsExplorerMainEn {
 	// Translations
 	@override String get title => 'Esplora';
 	@override String get projects => 'Progetti';
+	@override String get noProjects => 'Ancora nessun progetto, aggiungine uno!';
+}
+
+// Path: explorer.modal
+class _StringsExplorerModalIt extends _StringsExplorerModalEn {
+	_StringsExplorerModalIt._(_StringsIt root) : this._root = root, super._(root);
+
+	@override final _StringsIt _root; // ignore: unused_field
+
+	// Translations
+	@override late final _StringsExplorerModalDeleteIt delete = _StringsExplorerModalDeleteIt._(_root);
+}
+
+// Path: explorer.modal.delete
+class _StringsExplorerModalDeleteIt extends _StringsExplorerModalDeleteEn {
+	_StringsExplorerModalDeleteIt._(_StringsIt root) : this._root = root, super._(root);
+
+	@override final _StringsIt _root; // ignore: unused_field
+
+	// Translations
+	@override late final _StringsExplorerModalDeleteProjectIt project = _StringsExplorerModalDeleteProjectIt._(_root);
+}
+
+// Path: explorer.modal.delete.project
+class _StringsExplorerModalDeleteProjectIt extends _StringsExplorerModalDeleteProjectEn {
+	_StringsExplorerModalDeleteProjectIt._(_StringsIt root) : this._root = root, super._(root);
+
+	@override final _StringsIt _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Elimina progetto';
+	@override String content({required Object ProjectName}) => 'Sei sicuro di voler eliminare ${ProjectName}?';
+	@override String get cta => 'Elimina';
 }
