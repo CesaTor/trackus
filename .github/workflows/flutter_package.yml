@@ -102,7 +102,7 @@ jobs:
         run: ${{inputs.setup}}
 
       - name: ✨ Check Formatting
-        run: dart format --line-length ${{inputs.format_line_length}} --set-exit-if-changed $(find ${{inputs.format_directories}} -name '*.dart' -not -name '*.g.dart.dart' -and -not -name '*.freezed.dart') 
+        run: dart format --line-length ${{inputs.format_line_length}} --set-exit-if-changed $(find ${{inputs.format_directories}} -name '*.dart' -and -not -name '*.g.dart.dart' -and -not -name '*.freezed.dart') 
         
       - name: 🕵️ Analyze
         run: flutter analyze ${{inputs.analyze_directories}}
