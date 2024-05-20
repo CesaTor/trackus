@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:trackus/app/models/models.dart';
 import 'package:trackus/features/search/domain/usecases/search.dart';
-import 'package:trackus/lib.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';

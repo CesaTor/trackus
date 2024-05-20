@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackus/app/i18n/i18n.dart';
+import 'package:trackus/app/models/models.dart';
 import 'package:trackus/features/search/domain/usecases/search.dart';
 import 'package:trackus/features/search/presentation/bloc/search_bloc.dart';
 import 'package:trackus/features/task/presentation/widgets/task_item.dart';
-import 'package:trackus/lib.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});

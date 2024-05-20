@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:trackus/app/app.dart';
 import 'package:trackus/features/item_list/item_list.dart';
-import 'package:trackus/lib.dart';
 
 class ExploreProjectPage extends StatelessWidget {
   const ExploreProjectPage({

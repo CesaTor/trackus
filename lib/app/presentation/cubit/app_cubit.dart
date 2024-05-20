@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:trackus/lib.dart';
+import 'package:trackus/app/models/models.dart';
+import 'package:trackus/app/usecases/usecases.dart';
 
 class AppState {
   AppState({required this.items});

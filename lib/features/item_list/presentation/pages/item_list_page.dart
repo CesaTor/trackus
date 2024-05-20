@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trackus/core/extensions/extensions.dart';
+import 'package:trackus/app/extensions/extensions.dart';
+import 'package:trackus/app/models/models.dart';
+import 'package:trackus/app/ui/ui.dart';
 import 'package:trackus/features/item_list/item_list.dart';
 import 'package:trackus/features/task/presentation/widgets/task_item.dart';
-import 'package:trackus/lib.dart';
 
 class ItemListPage extends StatelessWidget {
   const ItemListPage({

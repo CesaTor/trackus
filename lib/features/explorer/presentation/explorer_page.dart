@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trackus/core/extensions/extensions.dart';
+import 'package:trackus/app/app.dart';
 import 'package:trackus/features/explorer/route/explorer_route.dart';
 import 'package:trackus/features/settings/route/settings_route.dart';
-import 'package:trackus/lib.dart';
 
 class ExplorerPage extends StatefulWidget {
   const ExplorerPage({super.key});

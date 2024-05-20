@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:trackus/app/app.dart';
 import 'package:trackus/features/settings/route/settings_route.dart';
-import 'package:trackus/lib.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

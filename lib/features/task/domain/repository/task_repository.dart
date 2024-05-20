@@ -1,5 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:trackus/core/core.dart';
+import 'package:trackus/app/models/models.dart';
 
 class TaskRepository {
   TaskRepository(this.isar);

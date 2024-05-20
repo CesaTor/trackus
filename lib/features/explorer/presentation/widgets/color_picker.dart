@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trackus/core/global.dart';
+import 'package:trackus/app/global.dart';
 
 class ColorPicker extends StatelessWidget {
   const ColorPicker({

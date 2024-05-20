@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:trackus/app/models/models.dart';
 import 'package:trackus/features/task/task.dart';
-import 'package:trackus/lib.dart';
 
 sealed class TaskEvent extends Equatable {
   const TaskEvent();

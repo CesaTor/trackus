@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trackus/core/extensions/extensions.dart';
+import 'package:trackus/app/app.dart';
 import 'package:trackus/features/task/task.dart';
-import 'package:trackus/lib.dart';
 
 class TaskItem extends StatelessWidget {
   const TaskItem({

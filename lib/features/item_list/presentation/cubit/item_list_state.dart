@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:trackus/lib.dart';
+import 'package:trackus/app/models/models.dart';
 
 enum ItemListStatus { initial, loading, loaded, error }
 

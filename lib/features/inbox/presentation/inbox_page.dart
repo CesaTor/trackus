@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackus/app/app.dart';
+import 'package:trackus/features/features.dart';
 import 'package:trackus/features/item_list/item_list.dart';
-import 'package:trackus/lib.dart';
 
 class InboxPage extends StatelessWidget {
   const InboxPage({super.key});

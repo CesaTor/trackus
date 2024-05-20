@@ -1,4 +1,4 @@
-import 'package:trackus/core/core.dart';
+import 'package:trackus/app/models/models.dart';
 import 'package:trackus/features/task/task.dart';
 
 class ToggleIsDone {

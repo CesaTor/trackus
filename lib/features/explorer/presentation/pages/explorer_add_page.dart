@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trackus/core/extensions/extensions.dart';
+import 'package:trackus/app/app.dart';
 import 'package:trackus/features/explorer/explorer.dart';
-import 'package:trackus/lib.dart';
 
 class ExplorerAddPage extends StatefulWidget {
   const ExplorerAddPage({

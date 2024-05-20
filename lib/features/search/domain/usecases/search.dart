@@ -1,4 +1,4 @@
-import 'package:trackus/lib.dart';
+import 'package:trackus/app/app.dart';
 
 class Search {
   Search(this.repository);

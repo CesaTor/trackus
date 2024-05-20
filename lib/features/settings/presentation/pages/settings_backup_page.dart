@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:trackus/lib.dart';
+import 'package:trackus/app/i18n/i18n.dart';
 
 class SettingsBackupPage extends StatelessWidget {
   const SettingsBackupPage({super.key});

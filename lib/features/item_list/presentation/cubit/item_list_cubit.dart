@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:trackus/app/models/models.dart';
 import 'package:trackus/features/item_list/presentation/cubit/cubit.dart';
-import 'package:trackus/lib.dart';
 
 class ItemListCubit extends Cubit<ItemListState> {
   ItemListCubit({
