@@ -10,8 +10,8 @@ sealed class TaskEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TaskUpdate extends TaskEvent {
-  const TaskUpdate(this.item);
+class TaskLoaded extends TaskEvent {
+  const TaskLoaded(this.item);
   final Item item;
 
   @override
@@ -32,7 +32,7 @@ class TaskBloc extends Bloc<TaskEvent, Item> {
   }) : super(item) {
     on<TaskEvent>(
       (event, emit) async => switch (event) {
-        TaskUpdate() => emit(item),
+        TaskLoaded() => emit(item),
         TaskToggle() => emit(await toggle(state)),
       },
     );

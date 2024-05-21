@@ -21,6 +21,14 @@ class Item extends Equatable {
     this.project.value = project;
   }
 
+  Item.empty()
+      : title = '',
+        isDone = false,
+        description = null,
+        dueDate = null,
+        reminderDateTime = null,
+        priority = Priority.none;
+
   Item copyWith({
     Id? id,
     String? title,

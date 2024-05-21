@@ -12,6 +12,7 @@ class ItemListPage extends StatelessWidget {
   const ItemListPage({
     required this.title,
     required this.getItems,
+    required this.watchItems,
     required this.getProjects,
     required this.insertItem,
     this.project,
@@ -24,6 +25,8 @@ class ItemListPage extends StatelessWidget {
   final DateTime? dueDate;
   final Project? project;
   final FutureOr<List<Item>> Function() getItems;
+  final Stream<List<Item>> Function() watchItems;
+
   final FutureOr<List<Project>> Function() getProjects;
   final Future<void> Function(Item) insertItem;
   final List<Widget>? actions;
@@ -34,6 +37,7 @@ class ItemListPage extends StatelessWidget {
       create: (_) => ItemListCubit(
         getItems: getItems,
         getProjects: getProjects,
+        watchItems: watchItems,
         insertItem: insertItem,
       )..init(),
       child: _ItemListView(
@@ -59,10 +63,6 @@ class _ItemListView extends StatelessWidget {
   final DateTime? defaultDueDate;
   final List<Widget>? actions;
 
-  void updateState(BuildContext context) {
-    context.read<ItemListCubit>().init();
-  }
-
   void addItem(BuildContext context, Item item) {
     context.read<ItemListCubit>().insertItem(item);
   }
@@ -71,6 +71,8 @@ class _ItemListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final projects =
         context.select((ItemListCubit cubit) => cubit.state.projects);
+
+    final items = context.select((ItemListCubit cubit) => cubit.state.items);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,32 +84,31 @@ class _ItemListView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: BlocBuilder<ItemListCubit, ItemListState>(
-          builder: (context, state) {
-            final items = state.items;
-            return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return TaskItem(
-                  key: ValueKey(item.id),
-                  item: item,
-                  showIfDone: true,
-                );
-              },
+        child: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return TaskItem(
+              item: item,
+              showIfDone: true,
             );
           },
         ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: project?.colorValue.color,
-        onPressed: () {
-          ItemAdder(
+        onPressed: () async {
+          final item = await ItemEditor(
             projects: projects,
-            initialProject: project,
-            defaultDueDate: defaultDueDate,
-            onAdd: (item) => addItem(context, item),
+            initialItem: Item.empty().copyWith(
+              project: project,
+              dueDate: defaultDueDate,
+            ),
           ).show(context);
+
+          if (item != null && context.mounted) {
+            addItem(context, item);
+          }
         },
         child: const Icon(Icons.add),
       ),

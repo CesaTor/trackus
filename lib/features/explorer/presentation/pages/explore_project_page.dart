@@ -23,6 +23,7 @@ class ExploreProjectPage extends StatelessWidget {
         }
         final proj = snapshot.data ?? defaultProject;
         return ItemListPage(
+          watchItems: () => WatchItemsByProject(context.read()).call(projectId),
           title: proj.name,
           actions: [
             // Remove project button

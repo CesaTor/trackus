@@ -11,3 +11,4 @@ export 'insert_item.dart';
 export 'insert_project.dart';
 export 'watch_all_items.dart';
 export 'watch_all_projects.dart';
+export 'watch_items_by_project.dart';

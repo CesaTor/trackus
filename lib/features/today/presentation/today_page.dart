@@ -14,6 +14,7 @@ class TodayPage extends StatelessWidget {
     return ItemListPage(
       title: i18n.core.today,
       dueDate: today,
+      watchItems: () => WatchTodayItems(context.read()).call(),
       getItems: GetTodayItems(context.read()).call,
       getProjects: GetAllProjects(context.read()).call,
       insertItem: InsertItem(context.read()).call,

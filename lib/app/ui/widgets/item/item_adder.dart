@@ -6,48 +6,39 @@ import 'package:trackus/app/models/models.dart';
 
 part 'item_adder_options.dart';
 
-class ItemAdder extends StatefulWidget {
-  const ItemAdder({
+class ItemEditor extends StatefulWidget {
+  const ItemEditor({
     required this.projects,
-    required this.onAdd,
-    this.initialProject,
-    this.defaultDueDate,
+    required this.initialItem,
     super.key,
   });
 
-  Future<void> show(BuildContext context) {
-    return showModalBottomSheet<void>(
+  Future<Item?> show(BuildContext context) {
+    return showModalBottomSheet<Item>(
       context: context,
       builder: (context) => this,
       shape: const BeveledRectangleBorder(),
     );
   }
 
-  final DateTime? defaultDueDate;
-  final Project? initialProject;
   final Iterable<Project> projects;
-  final void Function(Item item) onAdd;
+  final Item initialItem;
 
   @override
-  State<ItemAdder> createState() => _ItemAdderState();
+  State<ItemEditor> createState() => _ItemEditorState();
 }
 
-class _ItemAdderState extends State<ItemAdder> {
+class _ItemEditorState extends State<ItemEditor> {
   late final TextEditingController titleController;
   late final TextEditingController descriptionController;
+  late final Item item;
 
   @override
   void initState() {
-    titleController = TextEditingController();
-    descriptionController = TextEditingController();
+    item = widget.initialItem;
+    titleController = TextEditingController(text: item.title);
+    descriptionController = TextEditingController(text: item.description);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
-    super.dispose();
   }
 
   @override
@@ -59,10 +50,10 @@ class _ItemAdderState extends State<ItemAdder> {
         _Description(descriptionController),
         ItemAdderOptions(
           projects: widget.projects,
-          initialProject: widget.initialProject,
-          dafaultDueDate: widget.defaultDueDate,
+          initialProject: item.project.value,
+          dafaultDueDate: item.dueDate,
           onSave: (project, dueDate, priority) {
-            final item = Item(
+            final newItem = item.copyWith(
               title: titleController.text,
               isDone: false,
               priority: priority,
@@ -71,12 +62,18 @@ class _ItemAdderState extends State<ItemAdder> {
               project: project,
             );
 
-            widget.onAdd(item);
-            Navigator.of(context).pop(item);
+            Navigator.of(context).pop(newItem);
           },
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
   }
 }
 

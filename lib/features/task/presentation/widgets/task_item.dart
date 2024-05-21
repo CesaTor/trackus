@@ -47,12 +47,14 @@ class _TaskItem extends StatelessWidget {
             onLongPress: () async {
               final projects = await GetAllProjects(context.read()).call();
               if (context.mounted) {
-                await ItemAdder(
+                final newItem = await ItemEditor(
                   projects: projects,
-                  initialProject: item.project.value ?? defaultProject,
-                  defaultDueDate: item.dueDate,
-                  onAdd: (item) async => InsertItem(context.read()).call(item),
+                  initialItem: item,
                 ).show(context);
+
+                if (newItem != null && context.mounted) {
+                  await InsertItem(context.read()).call(newItem);
+                }
               }
             },
             child: CheckboxListTile(

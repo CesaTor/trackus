@@ -13,6 +13,9 @@ class InboxPage extends StatelessWidget {
       title: i18n.core.project.inbox,
       project: defaultProject,
       getItems: GetInboxItems(context.read()).call,
+      watchItems: () => WatchItemsByProject(context.read()).call(
+        defaultProject.id ?? 0,
+      ),
       getProjects: GetAllProjects(context.read()).call,
       insertItem: InsertItem(context.read()).call,
     );
