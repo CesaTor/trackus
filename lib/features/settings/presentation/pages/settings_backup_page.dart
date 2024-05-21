@@ -2,11 +2,10 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:trackus/app/i18n/i18n.dart';
+import 'package:trackus/_shared/_shared.dart';
+import 'package:trackus/_shared/data/source/database/database.dart';
 
 class SettingsBackupPage extends StatelessWidget {
   const SettingsBackupPage({super.key});
@@ -31,8 +30,6 @@ class SettingsBackupPage extends StatelessWidget {
   }
 
   Future<void> createBackup(BuildContext context) async {
-    final isar = context.read<Isar>();
-
     final backUpDir = await FilePicker.platform.getDirectoryPath();
     if (backUpDir == null) {
       if (!context.mounted) return;
@@ -51,7 +48,8 @@ class SettingsBackupPage extends StatelessWidget {
     // if already we have another backup file, delete it here.
     if (backUpFile.existsSync()) await backUpFile.delete();
 
-    await isar.copyToFile(filePath);
+    final db = sl.get<Database>();
+    await db.db.copyToFile(filePath);
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -63,7 +61,7 @@ class SettingsBackupPage extends StatelessWidget {
   }
 
   Future<void> restoreBackup(BuildContext context) async {
-    final isar = context.read<Isar>();
+    final db = sl.get<Database>();
 
     final result = await FilePicker.platform.pickFiles();
 
@@ -71,16 +69,24 @@ class SettingsBackupPage extends StatelessWidget {
       final file = File(result.files.single.path!);
       final dbDirectory = await getApplicationDocumentsDirectory();
       // close the database before any changes
-      await isar.close();
+      // delete the current database
+      await db.db.close();
+      sl.unregister<Database>();
 
       final dbPath = '${dbDirectory.path}/default.isar';
-
       await file.copy(dbPath);
+
+      // Reload the database
+      sl.registerSingleton(
+        await Database((await getApplicationDocumentsDirectory()).path).init(),
+      );
       // Restart the app to reload the database
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(i18n.settings.message.restored)),
         );
+
+        // TODO(ct): restart
       }
     }
   }

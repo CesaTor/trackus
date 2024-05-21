@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trackus/features/search/presentation/pages/search_page.dart';
+import 'package:trackus/_shared/_shared.dart';
+import 'package:trackus/features/search/search.dart';
 
 // Data
 class SearchData extends StatefulShellBranchData {
@@ -13,6 +14,12 @@ class SearchRouteData extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SearchPage(key: state.pageKey);
+    return SearchView(
+      key: state.pageKey,
+      viewModel: SearchViewModel(
+        search: Search(taskRepo, projectRepo),
+        updateTask: UpdateTask(taskRepo),
+      ),
+    );
   }
 }

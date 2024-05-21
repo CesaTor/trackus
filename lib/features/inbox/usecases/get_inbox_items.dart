@@ -1,8 +1,8 @@
-import 'package:trackus/app/app.dart';
+import 'package:trackus/_shared/_shared.dart';
 
 class GetInboxItems {
   GetInboxItems(this.repository);
-  final ItemRepository repository;
+  final TasksRepository repository;
 
-  Future<List<Item>> call() => repository.getInboxItems(includeDone: true);
+  Future<List<Task>> call() => repository.getAll();
 }

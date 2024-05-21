@@ -7,4 +7,5 @@ analyzer:
   exclude:
     - '**/*.g.dart'
   errors:
+    avoid_positional_boolean_parameters: ignore
     cascade_invocations: ignore

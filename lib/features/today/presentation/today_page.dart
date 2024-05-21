@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trackus/_shared/global.dart';
-import 'package:trackus/app/i18n/i18n.dart';
-import 'package:trackus/app/usecases/usecases.dart';
-import 'package:trackus/features/item_list/item_list.dart';
-import 'package:trackus/features/today/usecases/usecases.dart';
+import 'package:trackus/_shared/_shared.dart';
+import 'package:trackus/features/task_list/item_list.dart';
 
 class TodayPage extends StatelessWidget {
   const TodayPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ItemListPage(
+    return TaskListView(
+      defaultDueDate: today,
+      viewModel: TaskListViewModel(
+        addTask: AddTask(taskRepo),
+        deleteTask: DeleteTask(taskRepo),
+        getProjects: GetProjects(projectRepo),
+        getTasks: GetTasks(taskRepo),
+        updateTask: UpdateTask(taskRepo),
+      ),
       title: i18n.core.today,
-      dueDate: today,
-      watchItems: () => WatchTodayItems(context.read()).call(),
-      getItems: GetTodayItems(context.read()).call,
-      getProjects: GetAllProjects(context.read()).call,
-      insertItem: InsertItem(context.read()).call,
+      project: defaultProject,
     );
   }
 }

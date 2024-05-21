@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:trackus/app/app.dart';
+import 'package:trackus/_shared/_shared.dart';
 
 extension PumpApp on WidgetTester {
   Future<void> pumpApp(Widget widget) {

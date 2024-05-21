@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trackus/app/app.dart';
+import 'package:trackus/_shared/_shared.dart';
 import 'package:trackus/features/settings/route/settings_route.dart';
 
 class SettingsPage extends StatelessWidget {

@@ -49,6 +49,24 @@ class TasksRepositoryImpl implements TasksRepository {
 
   @override
   Stream<List<Task>> watchAll() {
-    return database.tasks.where().watch();
+    return database.tasks.where().watch(fireImmediately: true);
+  }
+
+  @override
+  Stream<List<Task>> watchAllWhereProjectId(int id) {
+    return database.tasks
+        .filter()
+        .project((q) => q.idEqualTo(id))
+        .watch(fireImmediately: true);
+  }
+
+  @override
+  Future<List<Task>> search(String query) {
+    return database.tasks
+        .filter()
+        .titleContains(query)
+        .or()
+        .descriptionContains(query)
+        .findAll();
   }
 }

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:trackus/_shared/_shared.dart';
+
+final sl = GetIt.instance;
+
+TasksRepository get taskRepo => sl.get<TasksRepositoryImpl>();
+ProjectsRepository get projectRepo => sl.get<ProjectsRepositoryImpl>();
 
 final defaultColor = projectColors.first;
 

@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trackus/app/i18n/i18n.dart';
-import 'package:trackus/app/models/models.dart';
-import 'package:trackus/features/search/domain/usecases/search.dart';
-import 'package:trackus/features/search/presentation/bloc/search_bloc.dart';
+import 'package:signals/signals_flutter.dart';
+import 'package:trackus/_shared/_shared.dart';
+import 'package:trackus/features/search/presentation/pages/search_viewmodel.dart';
 import 'package:trackus/features/task/presentation/widgets/task_item.dart';
 
-class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+class SearchView extends StatefulWidget {
+  const SearchView({
+    required this.viewModel,
+    super.key,
+  });
+
+  final SearchViewModel viewModel;
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-        create: (_) => SearchBloc(search: Search(context.read())),
-        child: _SearchView(),
-      );
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _SearchView extends StatefulWidget {
-  @override
-  State<_SearchView> createState() => _SearchViewState();
-}
-
-class _SearchViewState extends State<_SearchView> {
+class _SearchViewState extends State<SearchView> {
   late TextEditingController controller;
 
   @override
@@ -36,14 +31,10 @@ class _SearchViewState extends State<_SearchView> {
     super.dispose();
   }
 
-  void _search(BuildContext context, String query) {
-    context.read<SearchBloc>().add(SearchQueryChanged(query));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final items = context.select((SearchBloc bloc) => bloc.state.items);
-    final projects = context.select((SearchBloc bloc) => bloc.state.projects);
+    final tasks = widget.viewModel.tasks.watch(context);
+    final projects = widget.viewModel.projects.watch(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -56,13 +47,13 @@ class _SearchViewState extends State<_SearchView> {
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(48),
                 child: _SearchInput(
-                  onChange: (query) => _search(context, query),
+                  onChange: widget.viewModel.search,
                   controller: controller,
                 ),
               ),
             ),
             ...[
-              if (items.isNotEmpty) ...[
+              if (tasks.isNotEmpty) ...[
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(8),
@@ -72,14 +63,18 @@ class _SearchViewState extends State<_SearchView> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final item = items[index];
+                      final task = tasks[index];
                       return TaskItem(
-                        key: ValueKey(item.id),
-                        item: item,
+                        key: ValueKey(task.id),
+                        task: task,
                         showIfDone: true,
+                        toggle: (value) {
+                          widget.viewModel
+                              .markTaskAsCompleted(task, completed: value);
+                        },
                       );
                     },
-                    childCount: items.length,
+                    childCount: tasks.length,
                   ),
                 ),
               ],

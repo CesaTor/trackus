@@ -1,50 +1,37 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trackus/app/app.dart';
+import 'package:signals/signals_flutter.dart';
+import 'package:trackus/_shared/_shared.dart';
+import 'package:trackus/features/explorer/presentation/explore_viewmodel.dart';
 import 'package:trackus/features/explorer/route/explorer_route.dart';
 import 'package:trackus/features/settings/route/settings_route.dart';
 
 class ExplorerPage extends StatefulWidget {
-  const ExplorerPage({super.key});
+  const ExplorerPage({required this.viewmodel, super.key});
+
+  final ExploreViewModel viewmodel;
 
   @override
   State<ExplorerPage> createState() => _ExplorerPageState();
 }
 
 class _ExplorerPageState extends State<ExplorerPage> {
-  late List<Project> projects;
-  late StreamSubscription<List<Project>> streamSubscription;
-
-  List<Project> removeInbox(List<Project> projects) {
-    return projects
-        .where((element) => element.id != defaultProject.id)
-        .toList();
-  }
-
   @override
   void initState() {
-    projects = [];
-    GetAllProjects(context.read())
-        .call()
-        .then((value) => setState(() => projects = removeInbox(value)));
-
-    streamSubscription = WatchAllProjects(context.read())
-        .call()
-        .listen((event) => setState(() => projects = removeInbox(event)));
+    widget.viewmodel.init();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    streamSubscription.cancel();
+    widget.viewmodel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final projects = widget.viewmodel.projects.watch(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(i18n.explorer.main.title),
@@ -101,8 +88,8 @@ class _ExplorerPageState extends State<ExplorerPage> {
           final res = await const ExploreAddRouteData().push<Project>(context);
 
           if (res != null && context.mounted) {
-            final pId = await InsertProject(context.read()).call(res);
-            debugPrint(pId.toString());
+            final p = await widget.viewmodel.addProject(res);
+            debugPrint('added project: $p');
           }
         },
         icon: const Icon(Icons.add),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trackus/_shared/presentation/router/scaffold_navbar.dart';
-import 'package:trackus/features/explorer/route/explorer_route.dart';
 import 'package:trackus/features/features.dart';
-import 'package:trackus/features/search/route/search_route.dart';
-import 'package:trackus/features/settings/route/settings_route.dart';
 
 part 'app_router.g.dart';
 
