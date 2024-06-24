@@ -127,11 +127,9 @@ class ItemRepository {
 
   Stream<List<Project>> watchAllProjects() => isar.projects.where().watch();
 
-  @override
   Stream<List<Item>> watchItemsByProject(int projectId) =>
       isar.items.filter().project((q) => q.idEqualTo(projectId)).watch();
 
-  @override
   Stream<List<Item>> watchItemsByDate(DateTime date) =>
       isar.items.filter().dueDateBetween(date.start, date.end).watch();
 }

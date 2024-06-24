@@ -4,5 +4,5 @@ class GetInboxItems {
   GetInboxItems(this.repository);
   final ItemRepository repository;
 
-  Future<List<Item>> call() => repository.getInboxItems(includeDone: true);
+  Future<List<Item>> call() => repository.getInboxItems();
 }
